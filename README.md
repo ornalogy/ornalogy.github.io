@@ -1,2 +1,2 @@
-# ornalogy.github.io
+# ornalogy.ru
 Home page
