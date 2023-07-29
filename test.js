@@ -2,6 +2,7 @@ import { createServer, request } from 'http'
 import { resolve } from 'path'
 import { fastify } from 'fastify'
 import { fastifyStatic } from '@fastify/static'
+import { fastifyCors } from '@fastify/cors'
 
 const rootPort = 8080
 const appPort = 8081
@@ -19,6 +20,10 @@ const app = fastify({
   }
 })
 
+app.register(fastifyCors, {
+  credentials: true,
+  origin: '*'
+})
 app.register(fastifyStatic, {
   root: resolve('docs'),
   prefix: '/'
