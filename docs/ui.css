@@ -1,0 +1,95 @@
+:root {
+  --ornalogyfont-family        : Merriweather, Inter, sans-serif;
+  --ornalogy-main-bg-color     : #262626;
+  --ornalogy-main-color        : #e7e7e7;
+  --ornalogy-popup-bg-color    : #262626cc;
+  --ornalogy-border-color      : #333;
+  --ornalogy-input-bg-color    : #1e1e1edd;
+  --ornalogy-input-border-color: #767676;
+  --ornalogy-link-color        : #2196f3;
+  --ornalogy-shadow-color      : 0 0 0;
+  --ornalogy-elevation-1       : 0px 3px 1px -2px rgb(var(--ornalogy-shadow-color) / 0.2), 0px 2px 2px 0px rgb(var(--ornalogy-shadow-color) / 0.14), 0px 1px 5px 0px rgb(var(--ornalogy-shadow-color) / 0.12);
+  --ornalogy-elevation-2       : 0px 2px 4px -1px rgb(var(--ornalogy-shadow-color) / 0.2), 0px 4px 5px 0px rgb(var(--ornalogy-shadow-color) / 0.14), 0px 1px 10px 0px rgb(var(--ornalogy-shadow-color) / 0.12);
+  --ornalogy-elevation-3       : 0px 5px 5px -3px rgb(var(--ornalogy-shadow-color) / 0.2), 0px 8px 10px 1px rgb(var(--ornalogy-shadow-color) / 0.14), 0px 3px 14px 2px rgb(var(--ornalogy-shadow-color) / 0.12);
+  --ornalogy-elevation-4       : 0px 5px 5px -3px rgb(var(--ornalogy-shadow-color) / 0.2), 0px 8px 10px 1px rgb(var(--ornalogy-shadow-color) / 0.14), 0px 3px 14px 2px rgb(var(--ornalogy-shadow-color) / 0.12);
+  --ornalogy-elevation-5       : 0px 8px 10px -6px rgb(var(--ornalogy-shadow-color) / 0.2), 0px 16px 24px 2px rgb(var(--ornalogy-shadow-color) / 0.14), 0px 6px 30px 5px rgb(var(--ornalogy-shadow-color) / 0.12);
+}
+
+.ornalogy {
+  font-family: var(--ornalogyfont-family);
+  line-height: 1.5;
+  color      : var(--ornalogy-main-color);
+  box-sizing : border-box;
+}
+
+.ornalogy * {
+  box-sizing: border-box;
+}
+
+.ornalogy a {
+  color: var(--ornalogy-link-color);
+}
+
+.ornalogy input,
+.ornalogy select,
+.ornalogy textarea {
+  font-size       : 1rem;
+  color           : var(--ornalogy-main-color);
+  background-color: var(--ornalogy-input-bg-color);
+  border          : 1px solid var(--ornalogy-input-border-color);
+  border-radius   : .3rem;
+  padding         : .3rem .4rem;
+}
+
+.ornalogy__popup {
+  display        : flex;
+  flex-direction : column;
+  justify-content: center;
+  position       : fixed;
+  top            : 0;
+  left           : 0;
+  height         : 100%;
+  width          : 100%;
+  background     : var(--ornalogy-popup-bg-color);
+  z-index        : 1000;
+}
+
+.ornalogy__popup__content {
+  display       : flex;
+  flex-direction: column;
+  align-items   : center;
+  background    : var(--ornalogy-main-bg-color);
+  border        : 1px solid;
+  border-color  : var(--ornalogy-border-color);
+  border-radius : .3rem;
+  box-shadow    : var(--ornalogy-elevation-1);
+  margin        : 2rem;
+  gap           : 1.5rem;
+  padding       : 1.5rem 1.5rem 1rem 1.5rem;
+  max-height    : 100%;
+  overflow-y    : auto;
+}
+
+.ornalogy__popup__title {
+  text-align : center;
+  word-wrap  : break-word;
+  white-space: pre-wrap;
+  max-width  : 100%;
+  font-size  : 120%;
+}
+
+.ornalogy__popup__message {
+  text-align : center;
+  word-wrap  : break-word;
+  white-space: pre-wrap;
+  max-width  : 100%;
+}
+
+.ornalogy__popup__actions {
+  display: flex;
+  gap    : .5rem;
+}
+
+.ornalogy__popup__button {
+  padding: .4rem .8rem;
+}
