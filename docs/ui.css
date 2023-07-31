@@ -1,18 +1,23 @@
 :root {
-  --ornalogyfont-family        : Merriweather, Inter, sans-serif;
-  --ornalogy-main-bg-color     : #262626;
-  --ornalogy-main-color        : #e7e7e7;
-  --ornalogy-popup-bg-color    : #262626cc;
-  --ornalogy-border-color      : #333;
-  --ornalogy-input-bg-color    : #1e1e1edd;
-  --ornalogy-input-border-color: #767676;
-  --ornalogy-link-color        : #2196f3;
-  --ornalogy-shadow-color      : 0 0 0;
-  --ornalogy-elevation-1       : 0px 3px 1px -2px rgb(var(--ornalogy-shadow-color) / 0.2), 0px 2px 2px 0px rgb(var(--ornalogy-shadow-color) / 0.14), 0px 1px 5px 0px rgb(var(--ornalogy-shadow-color) / 0.12);
-  --ornalogy-elevation-2       : 0px 2px 4px -1px rgb(var(--ornalogy-shadow-color) / 0.2), 0px 4px 5px 0px rgb(var(--ornalogy-shadow-color) / 0.14), 0px 1px 10px 0px rgb(var(--ornalogy-shadow-color) / 0.12);
-  --ornalogy-elevation-3       : 0px 5px 5px -3px rgb(var(--ornalogy-shadow-color) / 0.2), 0px 8px 10px 1px rgb(var(--ornalogy-shadow-color) / 0.14), 0px 3px 14px 2px rgb(var(--ornalogy-shadow-color) / 0.12);
-  --ornalogy-elevation-4       : 0px 5px 5px -3px rgb(var(--ornalogy-shadow-color) / 0.2), 0px 8px 10px 1px rgb(var(--ornalogy-shadow-color) / 0.14), 0px 3px 14px 2px rgb(var(--ornalogy-shadow-color) / 0.12);
-  --ornalogy-elevation-5       : 0px 8px 10px -6px rgb(var(--ornalogy-shadow-color) / 0.2), 0px 16px 24px 2px rgb(var(--ornalogy-shadow-color) / 0.14), 0px 6px 30px 5px rgb(var(--ornalogy-shadow-color) / 0.12);
+  --ornalogyfont-family                : Merriweather, Inter, sans-serif;
+  --ornalogy-main-bg-color             : #262626;
+  --ornalogy-main-color                : #e7e7e7;
+  --ornalogy-popup-bg-color            : #262626cc;
+  --ornalogy-border-color              : #333;
+  --ornalogy-input-bg-color            : #1e1e1edd;
+  --ornalogy-input-border-color        : #767676;
+  --ornalogy-link-color                : #2196f3;
+  --ornalogy-button-bg-color           : #1e1e1e;
+  --ornalogy-button-active-color       : #b7b7b7;
+  --ornalogy-button-active-border-color: #2e2e2e;
+  --ornalogy-shadow-color              : 0 0 0;
+  --ornalogy-shadow-color-r            : 128 128 128;
+  --ornalogy-elevation-1r              : -1px -3px 1px -2px rgb(var(--ornalogy-shadow-color) / 0.2), 1px 1px 2px 0px rgb(var(--ornalogy-shadow-color-r) / 0.14), -1px -1px 5px 0px rgb(var(--ornalogy-shadow-color) / 0.12);
+  --ornalogy-elevation-1               : 0px 3px 1px -2px rgb(var(--ornalogy-shadow-color) / 0.2), 0px 2px 2px 0px rgb(var(--ornalogy-shadow-color) / 0.14), 0px 1px 5px 0px rgb(var(--ornalogy-shadow-color) / 0.12);
+  --ornalogy-elevation-2               : 0px 2px 4px -1px rgb(var(--ornalogy-shadow-color) / 0.2), 0px 4px 5px 0px rgb(var(--ornalogy-shadow-color) / 0.14), 0px 1px 10px 0px rgb(var(--ornalogy-shadow-color) / 0.12);
+  --ornalogy-elevation-3               : 0px 5px 5px -3px rgb(var(--ornalogy-shadow-color) / 0.2), 0px 8px 10px 1px rgb(var(--ornalogy-shadow-color) / 0.14), 0px 3px 14px 2px rgb(var(--ornalogy-shadow-color) / 0.12);
+  --ornalogy-elevation-4               : 0px 5px 5px -3px rgb(var(--ornalogy-shadow-color) / 0.2), 0px 8px 10px 1px rgb(var(--ornalogy-shadow-color) / 0.14), 0px 3px 14px 2px rgb(var(--ornalogy-shadow-color) / 0.12);
+  --ornalogy-elevation-5               : 0px 8px 10px -6px rgb(var(--ornalogy-shadow-color) / 0.2), 0px 16px 24px 2px rgb(var(--ornalogy-shadow-color) / 0.14), 0px 6px 30px 5px rgb(var(--ornalogy-shadow-color) / 0.12);
 }
 
 .ornalogy {
@@ -39,6 +44,32 @@
   border          : 1px solid var(--ornalogy-input-border-color);
   border-radius   : .3rem;
   padding         : .3rem .4rem;
+}
+
+.ornalogy button {
+  min-height    : 1.2rem;
+  line-height   : 1.2rem;
+  font-size     : 1rem;
+  background    : var(--ornalogy-button-bg-color);
+  color         : var(--ornalogy-main-color);
+  cursor        : pointer;
+  border        : 1px solid;
+  border-color  : var(--ornalogy-border-color);
+  box-shadow    : var(--ornalogy-elevation-1);
+  border-radius : .3rem;
+  padding       : .3rem .4rem;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+.ornalogy button:hover {
+  box-shadow: var(--ornalogy-elevation-2);
+}
+
+.ornalogy button:active {
+  color       : var(--ornalogy-button-active-color);
+  border-color: var(--ornalogy-button-active-border-color);
+  box-shadow  : var(--ornalogy-elevation-1r);
 }
 
 .ornalogy__popup {

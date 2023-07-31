@@ -9,15 +9,22 @@ oom(document.head, oom.link({
 }))
 
 
+const popupButtonLabels = {
+  ok: 'OK',
+  cancel: 'Отменить',
+  continue: 'Продолжить'
+}
+
+/** @typedef {'ok'|'cancel'|'continue'} PopupAction */
 /**
  * @typedef PopupOptions
  * @property {string|import('@notml/core').OOM} [title]
- * @property {Array<'ok'|'cancel'>} [actions=['ok']]
+ * @property {Array<PopupAction>} [actions=['ok']]
  */
 /**
  * @param {string|import('@notml/core').OOM} message
  * @param {PopupOptions} [options]
- * @returns {Promise<'ok'|'cancel'>}
+ * @returns {Promise<PopupAction>}
  */
 async function showPopup(message, options = {}) {
   const popupContent = oom.div({ class: 'ornalogy__popup__content' }, message)
@@ -36,7 +43,7 @@ async function showPopup(message, options = {}) {
       popupActions(oom.button({
         class: `ornalogy__popup__button ornalogy__popup__button-${action} `,
         onclick: () => { popup.dom.remove(); resolve(action) }
-      }, 'OK'))
+      }, popupButtonLabels[action]))
     }
 
     oom(document.body, popup)
