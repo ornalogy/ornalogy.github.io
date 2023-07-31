@@ -1,12 +1,8 @@
 import { oom } from 'https://cdn.jsdelivr.net/npm/@notml/core/+esm'
 
+const uiHost = 'https://ornalogy.ru'
 
-oom(document.head, oom.link({
-  rel: 'stylesheet',
-  href: window.location.hostname.endsWith('localhost')
-    ? 'http://ornalogy.localhost:8080/ui.css'
-    : 'https://ornalogy.ru/ui.css'
-}))
+oom(document.head, oom.link({ rel: 'stylesheet', href: `${uiHost}/ui.css` }))
 
 
 const popupButtonLabels = {

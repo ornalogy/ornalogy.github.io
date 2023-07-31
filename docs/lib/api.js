@@ -1,6 +1,4 @@
-const appHost = window.location.hostname.endsWith('localhost')
-  ? 'http://app.ornalogy.localhost:8080'
-  : 'https://app.ornalogy.ru'
+const appHost = 'https://app.ornalogy.ru'
 const apiHost = `${appHost}/api/`
 
 

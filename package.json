@@ -12,9 +12,11 @@
     "@fastify/static": "6.10.2",
     "@fastify/cors": "8.3.0",
     "pino-pretty": "10.0.1",
+    "localtunnel": "2.0.2",
     "remark": "14.0.3"
   },
   "scripts": {
-    "test": "node test.js"
+    "test": "node test.js",
+    "tunnel": "LOCAL_TUNNEL=true node test.js"
   }
 }

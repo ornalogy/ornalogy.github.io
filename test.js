@@ -1,9 +1,11 @@
 import { createServer, request } from 'http'
 import { resolve } from 'path'
+import { readFile } from 'fs/promises'
 import { fastify } from 'fastify'
 import { fastifyStatic } from '@fastify/static'
 import { fastifyCors } from '@fastify/cors'
 
+const isLocaltunnel = process.env.LOCAL_TUNNEL === 'true'
 const rootPort = 8080
 const appPort = 8081
 const proxyRules = {
@@ -28,6 +30,14 @@ app.register(fastifyStatic, {
   root: resolve('docs'),
   prefix: '/'
 })
+app.get('/ui.js', async (_, reply) => reply
+  .type('application/javascript')
+  .send((await readFile('./docs/ui.js', 'utf-8'))
+    .replace('https://ornalogy.ru', isLocaltunnel ? 'https://ornalogy.loca.lt' : 'http://ornalogy.localhost:8080')))
+app.get('/lib/api.js', async (_, reply) => reply
+  .type('application/javascript')
+  .send((await readFile('./docs/lib/api.js', 'utf-8'))
+    .replace('https://app.ornalogy.ru', isLocaltunnel ? 'https://app-ornalogy.loca.lt' : 'http://app.ornalogy.localhost:8080')))
 app.ready(async err => {
   if (err) {
     console.error(err)
@@ -36,7 +46,11 @@ app.ready(async err => {
     try {
       await app.listen({ host: '0.0.0.0', port: appPort })
       app.log.info(`App listening at http://localhost:${appPort}`)
-      listenProxy()
+      if (isLocaltunnel) {
+        await listenLocaltunnel()
+      } else {
+        listenProxy()
+      }
     } catch (err) {
       console.error(err)
       process.exit(1)
@@ -65,6 +79,23 @@ function listenProxy() {
     req.pipe(proxy, { end: true })
     proxy.on('error', err => { app.log.error(err); resA.statusCode = 500; resA.end() })
   }).listen(rootPort, () => {
-    app.log.info(`Proxy listening at http://ornalogy.localhost:${rootPort}`)
+    app.log.info(`Proxy at http://ornalogy.localhost:${rootPort}`)
+    app.log.info(`Proxy at http://app.ornalogy.localhost:${proxyRules['app.ornalogy.localhost'].port}/`)
   })
+}
+
+
+async function listenLocaltunnel() {
+  const localtunnel = (await import('localtunnel')).default
+  const tunnel1 = await localtunnel({
+    subdomain: 'ornalogy',
+    port: proxyRules['ornalogy.localhost'].port
+  })
+  const tunnel2 = await localtunnel({
+    subdomain: 'app-ornalogy',
+    port: proxyRules['app.ornalogy.localhost'].port
+  })
+
+  console.log(tunnel1.url)
+  console.log(tunnel2.url)
 }
