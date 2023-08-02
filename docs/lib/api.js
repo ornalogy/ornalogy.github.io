@@ -20,5 +20,6 @@ async function apiFetch(name, params = {}) {
 
 
 export {
+  appHost,
   apiFetch
 }
