@@ -14,7 +14,7 @@ async function loadApp() {
     await showLoginForm(data.token)
     loadApp()
   } else {
-    const script = await fetch(`${appHost}/app/${data.oneTimeToken}/main.js`)
+    const script = await fetch(`${appHost}/app/${data.oneTimeToken}/core.js`)
 
     console.log(data)
     console.log(await script.json())
