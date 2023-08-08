@@ -2,7 +2,9 @@ import { appHost, apiFetch } from './api.js'
 
 // @ts-ignore
 const appVersion = window.APP_VERSION
-const appScript = new Error('').stack.replace(/[\s\S]*app\.js\?s=(.*\.js)[\s\S]*/, '$1')
+const eStack = new Error('').stack
+const appScript = eStack.replace(/[\s\S]*app\.js\?s=(.*\.js)[\s\S]*/, '$1')
+const appModule = eStack.replace(/[\s\S]*app\.js\?m=(.*\.js)[\s\S]*/, '$1')
 
 
 async function initializeApp() {
@@ -17,7 +19,10 @@ async function initializeApp() {
     const { loadApp } = await import(`${appHost}/app/${data.oneTimeToken}/core.js`)
 
     console.log(data)
-    await loadApp({ appScript })
+    await loadApp({
+      appScript: appScript === eStack ? '' : appScript,
+      appModule: appModule === eStack ? '' : appModule
+    })
   }
 }
 
