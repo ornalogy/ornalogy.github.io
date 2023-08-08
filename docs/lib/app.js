@@ -5,23 +5,21 @@ const appVersion = window.APP_VERSION
 const appScript = new Error('').stack.replace(/[\s\S]*app\.js\?s=(.*\.js)[\s\S]*/, '$1')
 
 
-async function loadApp() {
+async function initializeApp() {
   const data = await apiFetch('get-app', { appVersion })
 
   if (!data.login) {
     const { showLoginForm } = await import('./login.js')
 
     await showLoginForm(data.token)
-    loadApp()
+    initializeApp()
   } else {
-    const script = await fetch(`${appHost}/app/${data.oneTimeToken}/core.js`)
+    const { loadApp } = await import(`${appHost}/app/${data.oneTimeToken}/core.js`)
 
     console.log(data)
-    console.log(await script.json())
+    await loadApp({ appScript })
   }
-
-  console.log(appScript)
 }
 
 
-loadApp()
+initializeApp()
