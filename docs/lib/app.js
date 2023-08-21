@@ -18,10 +18,10 @@ async function initializeApp() {
   } else {
     const { loadApp } = await import(`${appHost}/app/${data.oneTimeToken}/core.js`)
 
-    console.log(data)
     await loadApp({
       appScript: appScript === eStack ? '' : appScript,
-      appModule: appModule === eStack ? '' : appModule
+      appModule: appModule === eStack ? '' : appModule,
+      features: data.features
     })
   }
 }
