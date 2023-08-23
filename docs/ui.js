@@ -47,4 +47,25 @@ async function showPopup(message, options = {}) {
 }
 
 
-export { showPopup }
+/**
+ * @param {Error|string} error
+ * @param {{title?:string}} [options]
+ */
+async function showError(error, options = {}) {
+  await showPopup(error instanceof Error ? error.stack : error, options)
+}
+
+
+/**
+ * @param {((...args:any)=>Promise<void>)|((...args:any)=>void)} fn
+ * @param  {...any} args
+ * @returns {()=>any}
+ */
+function safely(fn, ...args) {
+  return () => (async () => {
+    await fn(...args)
+  })().catch(showError)
+}
+
+
+export { showPopup, showError, safely }

@@ -16,7 +16,7 @@ async function initializeApp() {
     await showLoginForm(data.token)
     initializeApp()
   } else {
-    const { loadApp } = await import(`${appHost}/app/${data.oneTimeToken}/core.js`)
+    const { loadApp } = await import(`${appHost}/app/${data.oneTimeToken}/app.js`)
 
     await loadApp({
       appScript: appScript === eStack ? '' : appScript,
