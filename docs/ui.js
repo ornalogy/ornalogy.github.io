@@ -23,7 +23,7 @@ const popupButtonLabels = {
  * @returns {Promise<PopupAction>}
  */
 async function showPopup(message, options = {}) {
-  const popupContent = oom.div({ class: 'ornalogy__popup__content' }, message)
+  const popupContent = oom.div({ class: 'ornalogy__popup__content' })
   const popupActions = oom.div({ class: 'ornalogy__popup__actions' })
   const popup = oom.div({ class: 'ornalogy ornalogy__popup' }, popupContent)
   const actions = options.actions || ['ok']

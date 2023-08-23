@@ -4,6 +4,7 @@
   --ornalogy-main-color                : #e7e7e7;
   --ornalogy-popup-bg-color            : #262626cc;
   --ornalogy-border-color              : #333;
+  --ornalogy-border-radius             : .4rem;
   --ornalogy-input-bg-color            : #1e1e1edd;
   --ornalogy-input-border-color        : #767676;
   --ornalogy-link-color                : #2196f3;
@@ -18,13 +19,15 @@
   --ornalogy-elevation-3               : 0px 5px 5px -3px rgb(var(--ornalogy-shadow-color) / 0.2), 0px 8px 10px 1px rgb(var(--ornalogy-shadow-color) / 0.14), 0px 3px 14px 2px rgb(var(--ornalogy-shadow-color) / 0.12);
   --ornalogy-elevation-4               : 0px 5px 5px -3px rgb(var(--ornalogy-shadow-color) / 0.2), 0px 8px 10px 1px rgb(var(--ornalogy-shadow-color) / 0.14), 0px 3px 14px 2px rgb(var(--ornalogy-shadow-color) / 0.12);
   --ornalogy-elevation-5               : 0px 8px 10px -6px rgb(var(--ornalogy-shadow-color) / 0.2), 0px 16px 24px 2px rgb(var(--ornalogy-shadow-color) / 0.14), 0px 6px 30px 5px rgb(var(--ornalogy-shadow-color) / 0.12);
+  --ornalogy-base-padding              : .6rem .8rem;
+  --ornalogy-input-padding             : .4rem .6rem;
 }
 
 .ornalogy {
-  font-family: var(--ornalogyfont-family);
   line-height: 1.5;
-  color      : var(--ornalogy-main-color);
   box-sizing : border-box;
+  font-family: var(--ornalogyfont-family);
+  color      : var(--ornalogy-main-color);
 }
 
 .ornalogy * {
@@ -39,27 +42,28 @@
 .ornalogy select,
 .ornalogy textarea {
   font-size       : 1rem;
+  border          : 1px solid;
   color           : var(--ornalogy-main-color);
   background-color: var(--ornalogy-input-bg-color);
-  border          : 1px solid var(--ornalogy-input-border-color);
-  border-radius   : .3rem;
-  padding         : .3rem .4rem;
+  border-color    : var(--ornalogy-input-border-color);
+  border-radius   : var(--ornalogy-border-radius);
+  padding         : var(--ornalogy-input-padding);
 }
 
 .ornalogy button {
   min-height    : 1.2rem;
   line-height   : 1.2rem;
   font-size     : 1rem;
-  background    : var(--ornalogy-button-bg-color);
-  color         : var(--ornalogy-main-color);
-  cursor        : pointer;
   border        : 1px solid;
-  border-color  : var(--ornalogy-border-color);
-  box-shadow    : var(--ornalogy-elevation-1);
-  border-radius : .3rem;
-  padding       : .3rem .4rem;
+  cursor        : pointer;
   letter-spacing: normal;
   text-transform: none;
+  background    : var(--ornalogy-button-bg-color);
+  color         : var(--ornalogy-main-color);
+  border-color  : var(--ornalogy-border-color);
+  box-shadow    : var(--ornalogy-elevation-1);
+  border-radius : var(--ornalogy-border-radius);
+  padding       : var(--ornalogy-base-padding);
 }
 
 .ornalogy button:hover {
@@ -73,54 +77,55 @@
 }
 
 .ornalogy__popup {
-  display        : flex;
-  flex-direction : column;
-  justify-content: center;
-  position       : fixed;
   top            : 0;
   left           : 0;
   height         : 100%;
   width          : 100%;
-  background     : var(--ornalogy-popup-bg-color);
   z-index        : 1000;
+  display        : flex;
+  flex-direction : column;
+  justify-content: center;
+  position       : fixed;
+  background     : var(--ornalogy-popup-bg-color);
 }
 
 .ornalogy__popup__content {
-  display       : flex;
-  flex-direction: column;
-  align-items   : center;
-  background    : var(--ornalogy-main-bg-color);
-  border        : 1px solid;
-  border-color  : var(--ornalogy-border-color);
-  border-radius : .3rem;
-  box-shadow    : var(--ornalogy-elevation-1);
   margin        : 2rem;
   gap           : 1.5rem;
   padding       : 1.5rem 1.5rem 1rem 1.5rem;
   max-height    : 100%;
+  border        : 1px solid;
   overflow-y    : auto;
+  display       : flex;
+  flex-direction: column;
+  align-items   : center;
+  background    : var(--ornalogy-main-bg-color);
+  border-color  : var(--ornalogy-border-color);
+  border-radius : var(--ornalogy-border-radius);
+  box-shadow    : var(--ornalogy-elevation-1);
+
 }
 
 .ornalogy__popup__title {
+  max-width  : 100%;
+  font-size  : 120%;
   text-align : center;
   word-wrap  : break-word;
   white-space: pre-wrap;
-  max-width  : 100%;
-  font-size  : 120%;
 }
 
 .ornalogy__popup__message {
+  max-width  : 100%;
   text-align : center;
   word-wrap  : break-word;
   white-space: pre-wrap;
-  max-width  : 100%;
 }
 
 .ornalogy__popup__actions {
-  display: flex;
   gap    : .5rem;
+  display: flex;
 }
 
 .ornalogy__popup__button {
-  padding: .4rem .8rem;
+  padding: var(--ornalogy-base-padding);
 }
