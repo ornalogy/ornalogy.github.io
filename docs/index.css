@@ -1,0 +1,17 @@
+.ornalogy {
+  --ornalogyfont-family: 'Roboto', sans-serif;
+}
+
+html,
+body {
+  height: 100%;
+  width : 100%;
+  margin: 0;
+}
+
+html {
+  background-image   : url(./img/bg.png);
+  background-position: center;
+  background-repeat  : no-repeat;
+  background-color   : var(--ornalogy-main-bg-color);
+}

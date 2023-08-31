@@ -2,7 +2,9 @@ import { oom } from 'https://cdn.jsdelivr.net/npm/@notml/core/+esm'
 
 const uiHost = 'https://ornalogy.ru'
 
-oom(document.head, oom.link({ rel: 'stylesheet', href: `${uiHost}/ui.css` }))
+if (!document.getElementById('ornalogy.ru/ui.css')) {
+  oom(document.head, oom.link({ rel: 'stylesheet', href: `${uiHost}/ui.css` }))
+}
 
 
 const popupButtonLabels = {
@@ -68,4 +70,19 @@ function safely(fn, ...args) {
 }
 
 
-export { showPopup, showError, safely }
+/**
+ * @typedef MainMenuItem
+ * @property {string} [group]
+ * @property {string} name
+ */
+/**
+ * @param {MainMenuItem[]} mainMenu
+ */
+function registerMainMenu(mainMenu) {
+  for (const menuItem of mainMenu) {
+    console.log(menuItem)
+  }
+}
+
+
+export { showPopup, showError, safely, registerMainMenu }
