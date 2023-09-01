@@ -1,7 +1,10 @@
 :root {
   --ornalogyfont-family                : Merriweather, Inter, sans-serif;
   --ornalogy-main-bg-color             : #262626;
+  --ornalogy-bg-color-alpha            : #262626cc;
   --ornalogy-main-color                : #e7e7e7;
+  --ornalogy-block-bg-color            : #1e1e1ecc;
+  --ornalogy-block-border-color        : #1c1c1c;
   --ornalogy-popup-bg-color            : #262626cc;
   --ornalogy-border-color              : #333;
   --ornalogy-border-radius             : .4rem;
@@ -20,6 +23,7 @@
   --ornalogy-elevation-4               : 0px 5px 5px -3px rgb(var(--ornalogy-shadow-color) / 0.2), 0px 8px 10px 1px rgb(var(--ornalogy-shadow-color) / 0.14), 0px 3px 14px 2px rgb(var(--ornalogy-shadow-color) / 0.12);
   --ornalogy-elevation-5               : 0px 8px 10px -6px rgb(var(--ornalogy-shadow-color) / 0.2), 0px 16px 24px 2px rgb(var(--ornalogy-shadow-color) / 0.14), 0px 6px 30px 5px rgb(var(--ornalogy-shadow-color) / 0.12);
   --ornalogy-base-padding              : .6rem .8rem;
+  --ornalogy-lite-padding              : .4rem .6rem;
   --ornalogy-input-padding             : .4rem .6rem;
 }
 
@@ -76,6 +80,33 @@
   box-shadow  : var(--ornalogy-elevation-1r);
 }
 
+.ornalogy__main {
+  top             : 0;
+  right           : 0;
+  height          : 100%;
+  width           : 100%;
+  z-index         : 100;
+  padding-bottom  : 6rem;
+  position        : fixed;
+  flex-direction  : column;
+  overflow-y      : auto;
+  background-color: var(--ornalogy-bg-color-alpha);
+}
+
+.ornalogy__section {
+  gap           : .5rem;
+  border        : 1px solid;
+  display       : flex;
+  flex-direction: column;
+  align-items   : stretch;
+  padding       : var(--ornalogy-lite-padding);
+  margin        : var(--ornalogy-base-padding);
+  border-radius : var(--ornalogy-border-radius);
+  background    : var(--ornalogy-block-bg-color);
+  border-color  : var(--ornalogy-block-border-color);
+  box-shadow    : var(--ornalogy-elevation-1);
+}
+
 .ornalogy__popup {
   top            : 0;
   left           : 0;
@@ -102,7 +133,7 @@
   background    : var(--ornalogy-main-bg-color);
   border-color  : var(--ornalogy-border-color);
   border-radius : var(--ornalogy-border-radius);
-  box-shadow    : var(--ornalogy-elevation-1);
+  box-shadow    : var(--ornalogy-elevation-5);
 
 }
 

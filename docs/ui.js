@@ -70,6 +70,8 @@ function safely(fn, ...args) {
 }
 
 
+const menu = oom.div({ class: 'ornalogy__mainmenu' })
+
 /**
  * @typedef MainMenuItem
  * @property {string} [group]
@@ -79,14 +81,15 @@ function safely(fn, ...args) {
  * @param {MainMenuItem[]} mainMenu
  */
 function registerMainMenu(mainMenu) {
-  const menu = oom.div({ class: 'ornalogy__mainmenu' })
-
   for (const item of mainMenu) {
     menu(oom.div(item.name))
   }
-
-  oom(document.body, menu)
 }
 
 
-export { showPopup, showError, safely, registerMainMenu }
+function showMainMenu() {
+  oom(document.body, oom.div({ class: 'ornalogy__main' }, oom.div({ class: 'ornalogy__section' }, menu)))
+}
+
+
+export { showPopup, showError, safely, registerMainMenu, showMainMenu }

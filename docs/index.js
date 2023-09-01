@@ -1,4 +1,4 @@
-import { registerMainMenu } from './ui.js'
+import { registerMainMenu, showMainMenu } from './ui.js'
 
 registerMainMenu([
   {
@@ -26,3 +26,4 @@ registerMainMenu([
     name: 'Полезные ссылки'
   }
 ])
+showMainMenu()
