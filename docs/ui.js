@@ -79,9 +79,13 @@ function safely(fn, ...args) {
  * @param {MainMenuItem[]} mainMenu
  */
 function registerMainMenu(mainMenu) {
-  for (const menuItem of mainMenu) {
-    console.log(menuItem)
+  const menu = oom.div({ class: 'ornalogy__mainmenu' })
+
+  for (const item of mainMenu) {
+    menu(oom.div(item.name))
   }
+
+  oom(document.body, menu)
 }
 
 
