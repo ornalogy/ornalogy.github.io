@@ -160,3 +160,9 @@
 .ornalogy__popup__button {
   padding: var(--ornalogy-base-padding);
 }
+
+.ornalogy__mainmenu {
+  gap           : .5rem;
+  display       : flex;
+  flex-direction: column;
+}

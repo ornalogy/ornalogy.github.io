@@ -70,6 +70,19 @@ function safely(fn, ...args) {
 }
 
 
+/**
+ * @param {import('@notml/core').OOM[]} sections
+ */
+function showSections(...sections) {
+  const main = oom.div({ class: 'ornalogy ornalogy__main' })
+  const old = document.querySelector('.ornalogy__main')
+
+  if (old) old.remove()
+  main(...sections)
+  oom(document.body, main)
+}
+
+
 const menu = oom.div({ class: 'ornalogy__mainmenu' })
 
 /**
@@ -82,14 +95,14 @@ const menu = oom.div({ class: 'ornalogy__mainmenu' })
  */
 function registerMainMenu(mainMenu) {
   for (const item of mainMenu) {
-    menu(oom.div(item.name))
+    menu(oom.button(item.name))
   }
 }
 
 
 function showMainMenu() {
-  oom(document.body, oom.div({ class: 'ornalogy__main' }, oom.div({ class: 'ornalogy__section' }, menu)))
+  showSections(oom.div({ class: 'ornalogy__section' }, menu))
 }
 
 
-export { showPopup, showError, safely, registerMainMenu, showMainMenu }
+export { showPopup, showError, safely, registerMainMenu, showSections, showMainMenu }
