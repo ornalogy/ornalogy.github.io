@@ -75,15 +75,26 @@ function safely(fn, ...args) {
  */
 function showSections(...sections) {
   const main = oom.div({ class: 'ornalogy ornalogy__main' })
-  const old = document.querySelector('.ornalogy__main')
 
-  if (old) old.remove()
+  hideSections()
   main(...sections)
   oom(document.body, main)
 }
 
 
-const menu = oom.div({ class: 'ornalogy__mainmenu' })
+function hideSections() {
+  const main = document.querySelector('.ornalogy__main')
+
+  if (main) main.remove()
+}
+
+
+const menu = oom.div({ class: 'ornalogy__mainmenu' }, oom
+  .div({ class: 'ornalogy__mainmenu__footer' }, oom
+    .div({
+      class: 'ornalogy__mainmenu__footer__button close',
+      onclick: () => setTimeout(hideSections, 200)
+    })))
 
 /**
  * @typedef MainMenuItem
