@@ -86,11 +86,53 @@
   height          : 100%;
   width           : 100%;
   z-index         : 100;
-  padding-bottom  : 6rem;
+  padding-bottom  : 7rem;
   position        : fixed;
   flex-direction  : column;
   overflow-y      : auto;
   background-color: var(--ornalogy-bg-color-alpha);
+}
+
+.ornalogy__main__footer {
+  bottom         : 0em;
+  left           : 0em;
+  right          : 0em;
+  padding-bottom : 1.5rem;
+  z-index        : 500;
+  width          : 100%;
+  display        : flex;
+  align-items    : center;
+  justify-content: space-around;
+  position       : fixed;
+}
+
+.ornalogy__main__footer__button {
+  height         : 56px;
+  width          : 56px;
+  border-radius  : 100%;
+  font-size      : 14px;
+  line-height    : 0;
+  background-size: 24px;
+  transition     : transform 0.1s ease-out;
+  box-shadow     : 0 6px 6px rgb(0 0 0 / 80%), 0 0 10px #000 inset;
+  border         : 2px solid #aaa;
+  background     : #3e3531;
+  text-align     : center;
+  align-items    : center;
+  justify-content: center;
+  image-rendering: auto;
+  display        : flex;
+}
+
+.ornalogy__main__footer__button:active {
+  filter         : brightness(1.2);
+  transform      : translateY(5px);
+  text-decoration: none;
+}
+
+.ornalogy__main__footer__button.close::before {
+  font-size: 2.5rem;
+  content  : '×';
 }
 
 .ornalogy__section {
@@ -165,46 +207,4 @@
   gap           : .5rem;
   display       : flex;
   flex-direction: column;
-}
-
-.ornalogy__mainmenu__footer {
-  bottom         : 0em;
-  left           : 0em;
-  right          : 0em;
-  padding-bottom : 1.5rem;
-  z-index        : 500;
-  width          : 100%;
-  display        : flex;
-  align-items    : center;
-  justify-content: space-around;
-  position       : fixed;
-}
-
-.ornalogy__mainmenu__footer__button {
-  height         : 56px;
-  width          : 56px;
-  border-radius  : 100%;
-  font-size      : 14px;
-  line-height    : 0;
-  background-size: 24px;
-  transition     : transform 0.1s ease-out;
-  box-shadow     : 0 6px 6px rgb(0 0 0 / 80%), 0 0 10px #000 inset;
-  border         : 2px solid #aaa;
-  background     : #3e3531;
-  text-align     : center;
-  align-items    : center;
-  justify-content: center;
-  image-rendering: auto;
-  display        : flex;
-}
-
-.ornalogy__mainmenu__footer__button:active {
-  filter         : brightness(1.2);
-  transform      : translateY(5px);
-  text-decoration: none;
-}
-
-.ornalogy__mainmenu__footer__button.close::before {
-  font-size: 2.5rem;
-  content  : '×';
 }

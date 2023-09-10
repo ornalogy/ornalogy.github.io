@@ -74,7 +74,12 @@ function safely(fn, ...args) {
  * @param {import('@notml/core').OOM[]} sections
  */
 function showSections(...sections) {
-  const main = oom.div({ class: 'ornalogy ornalogy__main' })
+  const main = oom.div({ class: 'ornalogy ornalogy__main' }, oom
+    .div({ class: 'ornalogy__main__footer' }, oom
+      .div({
+        class: 'ornalogy__main__footer__button close',
+        onclick: () => setTimeout(hideSections, 200)
+      })))
 
   hideSections()
   main(...sections)
@@ -89,12 +94,7 @@ function hideSections() {
 }
 
 
-const menu = oom.div({ class: 'ornalogy__mainmenu' }, oom
-  .div({ class: 'ornalogy__mainmenu__footer' }, oom
-    .div({
-      class: 'ornalogy__mainmenu__footer__button close',
-      onclick: () => setTimeout(hideSections, 200)
-    })))
+const menu = oom.div({ class: 'ornalogy__mainmenu' })
 
 /**
  * @typedef MainMenuItem
