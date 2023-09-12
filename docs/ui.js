@@ -94,10 +94,13 @@ function hideSections() {
 }
 
 
+/** @type {{[x:string]:import('@notml/core').OOM}} */
+const menuGroups = {}
 const menu = oom.div({ class: 'ornalogy__mainmenu' })
 
 /**
  * @typedef MainMenuItem
+ * @property {'group'} [type]
  * @property {string} [group]
  * @property {string} name
  */
@@ -106,7 +109,15 @@ const menu = oom.div({ class: 'ornalogy__mainmenu' })
  */
 function registerMainMenu(mainMenu) {
   for (const item of mainMenu) {
-    menu(oom.button(item.name))
+    if (item.type === 'group') {
+      menu(menuGroups[item.name] = oom
+        .div({ class: 'ornalogy__mainmenu__group' }, oom
+          .div({ class: 'ornalogy__mainmenu__title' }, item.name)))
+    } else if (item.group in menuGroups) {
+      menuGroups[item.group](oom.button(item.name))
+    } else {
+      menu(oom.button(item.name))
+    }
   }
 }
 
