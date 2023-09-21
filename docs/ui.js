@@ -71,18 +71,33 @@ function safely(fn, ...args) {
 
 
 /**
- * @param {import('@notml/core').OOM[]} sections
+ * @typedef FooterButtons
+ * @property {()=>void} [back]
  */
-function showSections(...sections) {
-  const main = oom.div({ class: 'ornalogy ornalogy__main' }, oom
-    .div({ class: 'ornalogy__main__footer' }, oom
-      .div({
-        class: 'ornalogy__main__footer__button close',
-        onclick: () => setTimeout(hideSections, 200)
-      })))
+/**
+ * @param {import('@notml/core').OOM} section
+ * @param {FooterButtons} [buttons]
+ */
+function showSections(section, buttons = {}) {
+  const footer = oom.div({ class: 'ornalogy__main__footer' })
+  const main = oom.div({ class: 'ornalogy ornalogy__main' }, footer)
+
+  if (buttons.back) {
+    footer(oom.div({
+      class: 'ornalogy__main__footer__button back',
+      onclick: () => setTimeout(buttons.back, 200)
+    }))
+  }
+  footer(oom.div({
+    class: 'ornalogy__main__footer__button close',
+    onclick: () => setTimeout(hideSections, 200)
+  }))
+  if (buttons.back) {
+    footer(oom.div({ class: 'ornalogy__main__footer__space' }))
+  }
 
   hideSections()
-  main(...sections)
+  main(section)
   oom(document.body, main)
 }
 
@@ -103,6 +118,8 @@ const menu = oom.div({ class: 'ornalogy__mainmenu' })
  * @property {'group'} [type]
  * @property {string} [group]
  * @property {string} name
+ * @property {string} [checkboxOption]
+ * @property {import('@notml/core').OOM} [section]
  */
 /**
  * @param {MainMenuItem[]} mainMenu
@@ -113,10 +130,26 @@ function registerMainMenu(mainMenu) {
       menu(menuGroups[item.name] = oom
         .div({ class: 'ornalogy__mainmenu__group' }, oom
           .div({ class: 'ornalogy__mainmenu__title' }, item.name)))
-    } else if (item.group in menuGroups) {
-      menuGroups[item.group](oom.button(item.name))
     } else {
-      menu(oom.button(item.name))
+      const itemElm = oom.div({ class: 'ornalogy__mainmenu__item' })
+
+      if (item.checkboxOption) {
+        itemElm(oom.input({ setting: item.checkboxOption, type: 'checkbox' }))
+      } else {
+        itemElm(oom.div({ class: 'ornalogy__mainmenu__item__space' }))
+      }
+
+      itemElm(oom.button(item.name, {
+        onclick: () => {
+          if (item.section) showSections(item.section, { back: showMainMenu })
+        }
+      }))
+
+      if (item.group in menuGroups) {
+        menuGroups[item.group](itemElm)
+      } else {
+        menu(itemElm)
+      }
     }
   }
 }
