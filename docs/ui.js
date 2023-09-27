@@ -119,6 +119,7 @@ const menu = oom.div({ class: 'ornalogy__mainmenu' })
  * @property {string} [group]
  * @property {string} name
  * @property {string} [checkboxOption]
+ * @property {()=>void} [configButton]
  * @property {import('@notml/core').OOM} [section]
  */
 /**
@@ -126,13 +127,23 @@ const menu = oom.div({ class: 'ornalogy__mainmenu' })
  */
 function registerMainMenu(mainMenu) {
   for (const item of mainMenu) {
-    if (item.type === 'group') {
-      menu(menuGroups[item.name] = oom
-        .div({ class: 'ornalogy__mainmenu__group' }, oom
-          .div({ class: 'ornalogy__mainmenu__title' }, item.name)))
-    } else {
-      const itemElm = oom.div({ class: 'ornalogy__mainmenu__item' })
+    const itemElm = oom.div({ class: 'ornalogy__mainmenu__item' })
 
+    if (item.type === 'group') {
+      menu(menuGroups[item.name] = oom.div({ class: 'ornalogy__mainmenu__group' }, itemElm))
+
+      if (item.checkboxOption) {
+        itemElm(oom.label({ class: 'ornalogy__mainmenu__title' },
+          oom.input({ setting: item.checkboxOption, type: 'checkbox' }),
+          item.name))
+      } else {
+        itemElm(oom.div({ class: 'ornalogy__mainmenu__title' }, item.name))
+      }
+
+      if (item.configButton) {
+        itemElm(oom.div({ class: 'ornalogy__mainmenu__config', onclick: item.configButton }))
+      }
+    } else {
       if (item.checkboxOption) {
         itemElm(oom.input({ setting: item.checkboxOption, type: 'checkbox' }))
       } else {

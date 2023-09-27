@@ -255,6 +255,19 @@
   align-items: center;
 }
 
+.ornalogy__mainmenu__config {
+  width          : 2rem;
+  display        : flex;
+  justify-content: center;
+  cursor         : pointer;
+}
+
+.ornalogy__mainmenu__config::before {
+  font-size  : 1.8rem;
+  line-height: 2rem;
+  content    : '⚙';
+}
+
 .ornalogy__mainmenu__item {
   gap          : .8rem;
   padding-right: 2rem;
