@@ -282,3 +282,30 @@
 .ornalogy__mainmenu__item button {
   width: 100%;
 }
+
+.ornalogy__floating__button {
+  z-index         : 1000000;
+  border-radius   : 1rem;
+  height          : 3rem;
+  width           : 3rem;
+  align-items     : center;
+  justify-content : center;
+  display         : flex;
+  flex-direction  : column;
+  cursor          : pointer;
+  position        : fixed;
+  background-color: var(--ornalogy-popup-bg-color);
+  border          : 1px solid var(--ornalogy-border-color);
+  box-shadow      : var(--ornalogy-elevation-1);
+}
+
+.ornalogy__floating__play::before {
+  font-size: 2rem;
+  content  : '⏵';
+}
+
+.ornalogy__floating__stop::before {
+  font-size: 2rem;
+  content  : '⏹';
+  color    : #ce9178;
+}
