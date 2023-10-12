@@ -1,4 +1,4 @@
-import { registerMainMenu, showMainMenu } from './ui.js'
+import { registerMainMenu, showMainMenu } from './lib/ui.js'
 
 registerMainMenu([
   {

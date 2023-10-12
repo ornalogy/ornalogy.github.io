@@ -1,5 +1,5 @@
 import { oom } from 'https://cdn.jsdelivr.net/npm/@notml/core/+esm'
-import { showPopup } from '../ui.js'
+import { showPopup } from './ui.js'
 
 
 /**

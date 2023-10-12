@@ -2,8 +2,8 @@ import { oom } from 'https://cdn.jsdelivr.net/npm/@notml/core/+esm'
 
 const uiHost = 'https://ornalogy.ru'
 
-if (!document.getElementById('ornalogy.ru/ui.css')) {
-  oom(document.head, oom.link({ rel: 'stylesheet', href: `${uiHost}/ui.css` }))
+if (!document.getElementById('ornalogy.ru/lib/ui.css')) {
+  oom(document.head, oom.link({ rel: 'stylesheet', href: `${uiHost}/lib/ui.css` }))
 }
 
 

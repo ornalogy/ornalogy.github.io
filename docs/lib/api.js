@@ -13,9 +13,20 @@ async function apiFetch(name, params = {}) {
     credentials: 'include',
     body: JSON.stringify(params)
   })
-  const data = await res.json()
 
-  return data
+  if (res.status === 200) {
+    const data = await res.json()
+
+    return data
+  }
+
+  const data = {
+    status: res.status,
+    statusText: res.statusText,
+    message: await res.text()
+  }
+
+  throw Error(`${data.status} ${data.statusText}\n${data.statusText === data.message ? '' : data.message}`.trim())
 }
 
 

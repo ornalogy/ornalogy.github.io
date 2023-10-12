@@ -30,9 +30,9 @@ app.register(fastifyStatic, {
   root: resolve('docs'),
   prefix: '/'
 })
-app.get('/ui.js', async (_, reply) => reply
+app.get('/lib/ui.js', async (_, reply) => reply
   .type('application/javascript')
-  .send((await readFile('./docs/ui.js', 'utf-8'))
+  .send((await readFile('./docs/lib/ui.js', 'utf-8'))
     .replace('https://ornalogy.ru', isLocaltunnel ? 'https://ornalogy.loca.lt' : 'http://ornalogy.localhost:8080')))
 app.get('/lib/api.js', async (_, reply) => reply
   .type('application/javascript')
