@@ -1,4 +1,5 @@
 import { oom } from 'https://cdn.jsdelivr.net/npm/@notml/core/+esm'
+import { registerSettingElements } from './settings.js'
 
 const uiHost = 'https://ornalogy.ru'
 
@@ -156,6 +157,8 @@ function registerMainMenu(mainMenu) {
         }
       }))
 
+      if (item.section) registerSettingElements(item.section)
+
       if (item.group in menuGroups) {
         menuGroups[item.group](itemElm)
       } else {
@@ -163,6 +166,7 @@ function registerMainMenu(mainMenu) {
       }
     }
   }
+  registerSettingElements(menu)
 }
 
 
@@ -171,4 +175,4 @@ function showMainMenu() {
 }
 
 
-export { showPopup, showError, safely, registerMainMenu, showSections, showMainMenu }
+export { showPopup, showError, safely, showSections, registerMainMenu, showMainMenu }

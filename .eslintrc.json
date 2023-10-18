@@ -3,7 +3,7 @@
   "overrides": [
     {
       "files": [
-        "docs"
+        "docs/**"
       ],
       "extends": "@nodutilus/eslint-config/browser.js"
     }
