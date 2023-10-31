@@ -2,7 +2,9 @@
 const settings = {}
 /** @type {{[name:string]:Set<HTMLElement>}} */
 const elements = {}
-
+/** @type {Set<(settings:{[name:string]:any})=>void>} */
+const changeSettingsWithDelayFN = new Set()
+let changeSettingsWithDelayTimer
 
 /**
  * @param {HTMLElement} element
@@ -78,11 +80,19 @@ function onChangeSetting(element) {
   const value = getSettingValue(element)
   const settingElms = elements[name] || []
 
+  settings[name] = value
   for (const settingElm of settingElms) {
     if (settingElm !== element) {
       setSettingValue(settingElm, value)
     }
   }
+
+  if (changeSettingsWithDelayTimer) clearTimeout(changeSettingsWithDelayTimer)
+  changeSettingsWithDelayTimer = setTimeout(() => {
+    for (const fn of changeSettingsWithDelayFN) {
+      fn(settings)
+    }
+  }, 3000)
 }
 
 
@@ -112,4 +122,21 @@ function registerSettingElements(elm) {
 }
 
 
-export { registerSettingElements }
+/**
+ * @param {{[name:string]:any}} inputSettings
+ */
+function applySettings(inputSettings) {
+  Object.assign(settings, inputSettings)
+}
+
+
+/**
+ *
+ * @param {(settings:{[name:string]:any})=>void} fn
+ */
+function onChangeSettingsWithDelay(fn) {
+  changeSettingsWithDelayFN.add(fn)
+}
+
+
+export { registerSettingElements, applySettings, onChangeSettingsWithDelay }

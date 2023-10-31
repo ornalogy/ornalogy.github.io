@@ -176,3 +176,4 @@ function showMainMenu() {
 
 
 export { showPopup, showError, safely, showSections, registerMainMenu, showMainMenu }
+export * from './settings.js'
