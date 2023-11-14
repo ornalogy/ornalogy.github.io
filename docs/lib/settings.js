@@ -3,6 +3,8 @@ const settings = {}
 /** @type {{[name:string]:Set<HTMLElement>}} */
 const elements = {}
 /** @type {Set<(settings:{[name:string]:any})=>void>} */
+const changeSettingsFN = new Set()
+/** @type {Set<(settings:{[name:string]:any})=>void>} */
 const changeSettingsWithDelayFN = new Set()
 let changeSettingsWithDelayTimer
 
@@ -78,6 +80,17 @@ function setSettingValue(element, value) {
 function onChangeSetting(element) {
   const name = element.getAttribute('setting')
   const value = getSettingValue(element)
+
+  updateElements(name, value, element)
+}
+
+
+/**
+ * @param {string} name
+ * @param {any} value
+ * @param {HTMLElement} [element]
+ */
+function updateElements(name, value, element) {
   const settingElms = elements[name] || []
 
   settings[name] = value
@@ -87,12 +100,15 @@ function onChangeSetting(element) {
     }
   }
 
+  for (const fn of changeSettingsFN) {
+    fn(settings)
+  }
   if (changeSettingsWithDelayTimer) clearTimeout(changeSettingsWithDelayTimer)
   changeSettingsWithDelayTimer = setTimeout(() => {
     for (const fn of changeSettingsWithDelayFN) {
       fn(settings)
     }
-  }, 3000)
+  }, 1000)
 }
 
 
@@ -131,12 +147,35 @@ function applySettings(inputSettings) {
 
 
 /**
- *
- * @param {(settings:{[name:string]:any})=>void} fn
+ * @param {string} name
+ * @param {any} value
  */
-function onChangeSettingsWithDelay(fn) {
-  changeSettingsWithDelayFN.add(fn)
+function updateSetting(name, value) {
+  if (settings[name] !== value) updateElements(name, value)
 }
 
 
-export { registerSettingElements, applySettings, onChangeSettingsWithDelay }
+/**
+ * @param {string} name
+ * @returns {any}
+ */
+function getSetting(name) {
+  return settings[name]
+}
+
+
+/**
+ *
+ * @param {(settings:{[name:string]:any})=>void} fn
+ * @param {boolean} [withDelay]
+ */
+function onChangeSettings(fn, withDelay) {
+  if (withDelay) {
+    changeSettingsWithDelayFN.add(fn)
+  } else {
+    changeSettingsFN.add(fn)
+  }
+}
+
+
+export { registerSettingElements, applySettings, updateSetting, getSetting, onChangeSettings }
