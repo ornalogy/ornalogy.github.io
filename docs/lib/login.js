@@ -6,7 +6,8 @@ import { showPopup } from './ui.js'
  * @param {string} token
  */
 async function showLoginForm(token) {
-  const botName = window.location.hostname.endsWith('localhost') ? 'ornaculum_dev_bot' : 'ornaculum_bot'
+  const devbot = window.location.hostname.endsWith('localhost') || window.location.hostname.endsWith('.loca.lt')
+  const botName = devbot ? 'ornaculum_dev_bot' : 'ornaculum_bot'
 
   await showPopup(oom.div({}, oom
     .div(oom
