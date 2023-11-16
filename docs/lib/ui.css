@@ -116,8 +116,6 @@
   height         : 56px;
   width          : 56px;
   border-radius  : 100%;
-  font-size      : 14px;
-  line-height    : 0;
   background-size: 24px;
   transition     : transform 0.1s ease-out;
   box-shadow     : 0 6px 6px rgb(0 0 0 / 80%), 0 0 10px #000 inset;
@@ -139,16 +137,6 @@
   filter         : brightness(1.2);
   transform      : translateY(5px);
   text-decoration: none;
-}
-
-.ornalogy__main__footer__button.close::before {
-  font-size: 2.5rem;
-  content  : '×';
-}
-
-.ornalogy__main__footer__button.back::before {
-  font-size: 2.5rem;
-  content  : '🡠';
 }
 
 .ornalogy__section {
@@ -262,12 +250,6 @@
   cursor         : pointer;
 }
 
-.ornalogy__mainmenu__config::before {
-  font-size  : 1.8rem;
-  line-height: 2rem;
-  content    : '⚙';
-}
-
 .ornalogy__mainmenu__item {
   gap          : .8rem;
   padding-right: 2rem;
@@ -299,13 +281,18 @@
   box-shadow      : var(--ornalogy-elevation-1);
 }
 
-.ornalogy__floating__play::before {
-  font-size: 2rem;
-  content  : '⏵';
+.ornalogy__floating__button .material-symbols-rounded {
+  font-size: 2.6rem;
 }
 
-.ornalogy__floating__stop::before {
-  font-size: 2rem;
-  content  : '⏹';
-  color    : #ce9178;
+.ornalogy__floating__play .stop_circle {
+  display: none;
+}
+
+.ornalogy__floating__stop .play_circle {
+  display: none;
+}
+
+.ornalogy__floating__stop .stop_circle {
+  color: #ce9178;
 }

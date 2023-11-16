@@ -4,7 +4,9 @@ import { registerSettingElements } from './settings.js'
 const uiHost = 'https://ornalogy.ru'
 
 if (!document.getElementById('ornalogy.ru/lib/ui.css')) {
-  oom(document.head, oom.link({ rel: 'stylesheet', href: `${uiHost}/lib/ui.css` }))
+  oom(document.head, oom
+    .link({ rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0' })
+    .link({ rel: 'stylesheet', href: `${uiHost}/lib/ui.css` }))
 }
 
 
@@ -84,13 +86,13 @@ function showSections(section, buttons = {}) {
   const main = oom.div({ class: 'ornalogy ornalogy__main' }, footer)
 
   if (buttons.back) {
-    footer(oom.div({
-      class: 'ornalogy__main__footer__button back',
+    footer(oom.div(oom.span({ class: 'material-symbols-rounded' }, 'arrow_back'), {
+      class: 'ornalogy__main__footer__button',
       onclick: () => setTimeout(buttons.back, 200)
     }))
   }
-  footer(oom.div({
-    class: 'ornalogy__main__footer__button close',
+  footer(oom.div(oom.span({ class: 'material-symbols-rounded' }, 'close'), {
+    class: 'ornalogy__main__footer__button',
     onclick: () => setTimeout(hideSections, 200)
   }))
   if (buttons.back) {
@@ -142,7 +144,8 @@ function registerMainMenu(mainMenu) {
       }
 
       if (item.configButton) {
-        itemElm(oom.div({ class: 'ornalogy__mainmenu__config', onclick: item.configButton }))
+        itemElm(oom.div(oom.span({ class: 'material-symbols-rounded' }, 'settings'),
+          { class: 'ornalogy__mainmenu__config', onclick: item.configButton }))
       }
     } else {
       if (item.checkboxOption) {
