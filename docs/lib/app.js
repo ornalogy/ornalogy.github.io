@@ -21,7 +21,7 @@ async function initializeApp() {
     await loadApp({
       appScript: appScript === eStack ? '' : appScript,
       appModule: appModule === eStack ? '' : appModule,
-      features: data.features
+      data
     })
   }
 }
