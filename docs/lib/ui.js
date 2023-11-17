@@ -86,10 +86,23 @@ function showSections(section, buttons = {}) {
   const main = oom.div({ class: 'ornalogy ornalogy__main' }, footer)
 
   if (buttons.back) {
+    const dx = document.body.clientWidth / 6
+    let startMoveX = 0
+
     footer(oom.div(oom.span({ class: 'material-symbols-rounded' }, 'arrow_back'), {
       class: 'ornalogy__main__footer__button',
       onclick: () => setTimeout(buttons.back, 200)
     }))
+    main({
+      ontouchstart: (/** @type {TouchEvent} */event) => { startMoveX = event.changedTouches[0].clientX },
+      ontouchend: () => { startMoveX = 0 },
+      ontouchmove: (/** @type {TouchEvent} */event) => {
+        if (startMoveX && startMoveX - event.changedTouches[0].clientX > dx) {
+          startMoveX = 0
+          buttons.back()
+        }
+      }
+    })
   }
   footer(oom.div(oom.span({ class: 'material-symbols-rounded' }, 'close'), {
     class: 'ornalogy__main__footer__button',
