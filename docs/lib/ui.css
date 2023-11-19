@@ -282,7 +282,8 @@
 }
 
 .ornalogy__floating__button .material-symbols-rounded {
-  font-size: 2.6rem;
+  font-size  : 2.6rem;
+  line-height: 0;
 }
 
 .ornalogy__floating__play .stop_circle {
