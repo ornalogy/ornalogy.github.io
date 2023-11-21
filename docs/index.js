@@ -25,5 +25,5 @@ registerMainMenu([
   {
     name: 'Полезные ссылки'
   }
-])
+], { canBeClosed: false })
 showMainMenu()

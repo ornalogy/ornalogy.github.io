@@ -35,7 +35,8 @@
 }
 
 .ornalogy * {
-  box-sizing: border-box;
+  box-sizing : border-box;
+  user-select: none;
 }
 
 .ornalogy a {
@@ -64,7 +65,6 @@
   line-height   : 1.2rem;
   font-size     : 1rem;
   border        : 1px solid;
-  cursor        : pointer;
   letter-spacing: normal;
   text-transform: none;
   background    : var(--ornalogy-button-bg-color);
@@ -247,7 +247,6 @@
   width          : 2rem;
   display        : flex;
   justify-content: center;
-  cursor         : pointer;
 }
 
 .ornalogy__mainmenu__item {
@@ -274,7 +273,6 @@
   justify-content : center;
   display         : flex;
   flex-direction  : column;
-  cursor          : pointer;
   position        : fixed;
   background-color: var(--ornalogy-popup-bg-color);
   border          : 1px solid var(--ornalogy-border-color);

@@ -74,24 +74,25 @@ function safely(fn, ...args) {
 
 
 /**
- * @typedef FooterButtons
+ * @typedef FooterConfig
  * @property {()=>void} [back]
+ * @property {boolean} [canBeClosed]
  */
 /**
  * @param {import('@notml/core').OOM} section
- * @param {FooterButtons} [buttons]
+ * @param {FooterConfig} [config]
  */
-function showSections(section, buttons = {}) {
+function showSections(section, config = {}) {
   const footer = oom.div({ class: 'ornalogy__main__footer' })
   const main = oom.div({ class: 'ornalogy ornalogy__main' }, footer)
 
-  if (buttons.back) {
+  if (config.back) {
     const dx = document.body.clientWidth / 6
     let startMoveX = 0
 
     footer(oom.div(oom.span({ class: 'material-symbols-rounded' }, 'arrow_back'), {
       class: 'ornalogy__main__footer__button',
-      onclick: () => setTimeout(buttons.back, 200)
+      onclick: () => setTimeout(config.back, 200)
     }))
     main({
       ontouchstart: (/** @type {TouchEvent} */event) => { startMoveX = event.changedTouches[0].clientX },
@@ -99,16 +100,21 @@ function showSections(section, buttons = {}) {
       ontouchmove: (/** @type {TouchEvent} */event) => {
         if (startMoveX && startMoveX - event.changedTouches[0].clientX > dx) {
           startMoveX = 0
-          buttons.back()
+          config.back()
         }
       }
     })
   }
-  footer(oom.div(oom.span({ class: 'material-symbols-rounded' }, 'close'), {
-    class: 'ornalogy__main__footer__button',
-    onclick: () => setTimeout(hideSections, 200)
-  }))
-  if (buttons.back) {
+
+  const isClose = typeof config.canBeClosed === 'undefined' || config.canBeClosed
+
+  if (isClose) {
+    footer(oom.div(oom.span({ class: 'material-symbols-rounded' }, 'close'), {
+      class: 'ornalogy__main__footer__button',
+      onclick: () => setTimeout(hideSections, 200)
+    }))
+  }
+  if (config.back && !isClose) {
     footer(oom.div({ class: 'ornalogy__main__footer__space' }))
   }
 
@@ -127,6 +133,12 @@ function hideSections() {
 
 /** @type {{[x:string]:import('@notml/core').OOM}} */
 const menuGroups = {}
+/**
+ * @typedef MenuConfig
+ * @property {boolean} [canBeClosed]
+ */
+/** @type {MenuConfig} */
+const menuConfig = {}
 const menu = oom.div({ class: 'ornalogy__mainmenu' })
 
 /**
@@ -140,8 +152,10 @@ const menu = oom.div({ class: 'ornalogy__mainmenu' })
  */
 /**
  * @param {MainMenuItem[]} mainMenu
+ * @param {MenuConfig} [config]
  */
-function registerMainMenu(mainMenu) {
+function registerMainMenu(mainMenu, config) {
+  if (config) Object.assign(menuConfig, config)
   for (const item of mainMenu) {
     const itemElm = oom.div({ class: 'ornalogy__mainmenu__item' })
 
@@ -187,7 +201,7 @@ function registerMainMenu(mainMenu) {
 
 
 function showMainMenu() {
-  showSections(oom.div({ class: 'ornalogy__section' }, menu))
+  showSections(oom.div({ class: 'ornalogy__section' }, menu), { canBeClosed: menuConfig.canBeClosed })
 }
 
 
