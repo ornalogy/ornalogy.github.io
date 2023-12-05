@@ -15,3 +15,25 @@ html {
   background-repeat  : no-repeat;
   background-color   : var(--ornalogy-main-bg-color);
 }
+
+.ornalogy__site__header {
+  padding: 0 1rem;
+}
+
+.ornalogy__main {
+  padding-bottom: 0;
+}
+
+.ornalogy__site__header {
+  padding: .2rem 1rem;
+}
+
+.ornalogy__site__footer {
+  font-size      : 80%;
+  padding        : 1rem;
+  flex-grow      : 1;
+  gap            : .5rem;
+  display        : flex;
+  justify-content: end;
+  align-items    : end;
+}

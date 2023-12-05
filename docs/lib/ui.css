@@ -93,6 +93,7 @@
   z-index         : 100;
   padding-bottom  : 7rem;
   position        : fixed;
+  display         : flex;
   flex-direction  : column;
   overflow-y      : auto;
   background-color: var(--ornalogy-bg-color-alpha);
@@ -250,10 +251,13 @@
 }
 
 .ornalogy__mainmenu__item {
-  gap          : .8rem;
+  gap        : .8rem;
+  display    : flex;
+  align-items: center;
+}
+
+.ornalogy__mainmenu__item__checkbox {
   padding-right: 2rem;
-  display      : flex;
-  align-items  : center;
 }
 
 .ornalogy__mainmenu__item__space {

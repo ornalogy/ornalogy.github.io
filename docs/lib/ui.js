@@ -84,7 +84,7 @@ function safely(fn, ...args) {
  */
 function showSections(section, config = {}) {
   const footer = oom.div({ class: 'ornalogy__main__footer' })
-  const main = oom.div({ class: 'ornalogy ornalogy__main' }, footer)
+  const main = oom.div({ class: 'ornalogy ornalogy__main' })
 
   if (config.back) {
     const dx = document.body.clientWidth / 6
@@ -118,6 +118,10 @@ function showSections(section, config = {}) {
     footer(oom.div({ class: 'ornalogy__main__footer__space' }))
   }
 
+  if (footer.dom.childNodes.length) {
+    main(footer)
+  }
+
   hideSections()
   main(section)
   oom(document.body, main)
@@ -135,6 +139,9 @@ function hideSections() {
 const menuGroups = {}
 /**
  * @typedef MenuConfig
+ * @property {import('@notml/core').OOM} [header]
+ * @property {import('@notml/core').OOM} [footer]
+ * @property {boolean} [checkboxOptions]
  * @property {boolean} [canBeClosed]
  */
 /** @type {MenuConfig} */
@@ -159,10 +166,14 @@ function registerMainMenu(mainMenu, config) {
   for (const item of mainMenu) {
     const itemElm = oom.div({ class: 'ornalogy__mainmenu__item' })
 
+    if (menuConfig.checkboxOptions !== false) {
+      itemElm.dom.classList.add('ornalogy__mainmenu__item__checkbox')
+    }
+
     if (item.type === 'group') {
       menu(menuGroups[item.name] = oom.div({ class: 'ornalogy__mainmenu__group' }, itemElm))
 
-      if (item.checkboxOption) {
+      if (menuConfig.checkboxOptions !== false && item.checkboxOption) {
         itemElm(oom.label({ class: 'ornalogy__mainmenu__title' },
           oom.input({ setting: item.checkboxOption, type: 'checkbox' }),
           item.name))
@@ -175,10 +186,12 @@ function registerMainMenu(mainMenu, config) {
           { class: 'ornalogy__mainmenu__config', onclick: item.configButton }))
       }
     } else {
-      if (item.checkboxOption) {
-        itemElm(oom.input({ setting: item.checkboxOption, type: 'checkbox' }))
-      } else {
-        itemElm(oom.div({ class: 'ornalogy__mainmenu__item__space' }))
+      if (menuConfig.checkboxOptions !== false) {
+        if (item.checkboxOption) {
+          itemElm(oom.input({ setting: item.checkboxOption, type: 'checkbox' }))
+        } else {
+          itemElm(oom.div({ class: 'ornalogy__mainmenu__item__space' }))
+        }
       }
 
       itemElm(oom.button(item.name, {
@@ -201,7 +214,13 @@ function registerMainMenu(mainMenu, config) {
 
 
 function showMainMenu() {
-  showSections(oom.div({ class: 'ornalogy__section' }, menu), { canBeClosed: menuConfig.canBeClosed })
+  const elms = []
+
+  if (menuConfig.header) elms.push(menuConfig.header)
+  elms.push(oom.div({ class: 'ornalogy__section' }, menu))
+  if (menuConfig.footer) elms.push(menuConfig.footer)
+
+  showSections(oom()(...elms), { canBeClosed: menuConfig.canBeClosed })
 }
 
 
