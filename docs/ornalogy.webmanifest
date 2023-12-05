@@ -1,0 +1,31 @@
+{
+  "name": "Ornalogy Homepage",
+  "short_name": "Ornalogy Homepage",
+  "description": "Ornalogy — the doctrine of existence, of the being of the Ornarians",
+  "lang": "ru-Ru",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#262626",
+  "theme_color": "#262626",
+  "categories": [
+    "games"
+  ],
+  "icons": [
+    {
+      "src": "/img/ornaculum-x64.png",
+      "type": "image/png",
+      "sizes": "64x64"
+    },
+    {
+      "src": "/img/ornaculum-x128.png",
+      "type": "image/png",
+      "sizes": "128x128"
+    },
+    {
+      "src": "/img/ornaculum-x256.png",
+      "type": "image/png",
+      "sizes": "256x256"
+    }
+  ]
+}

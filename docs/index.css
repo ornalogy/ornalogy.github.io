@@ -1,0 +1,39 @@
+.ornalogy {
+  --ornalogyfont-family: 'Roboto', sans-serif;
+}
+
+html,
+body {
+  height: 100%;
+  width : 100%;
+  margin: 0;
+}
+
+html {
+  background-image   : url(./img/bg.png);
+  background-position: center;
+  background-repeat  : no-repeat;
+  background-color   : var(--ornalogy-main-bg-color);
+}
+
+.ornalogy__site__header {
+  padding: 0 1rem;
+}
+
+.ornalogy__main {
+  padding-bottom: 0;
+}
+
+.ornalogy__site__header {
+  padding: .2rem 1rem;
+}
+
+.ornalogy__site__footer {
+  font-size      : 80%;
+  padding        : 1rem;
+  flex-grow      : 1;
+  gap            : .5rem;
+  display        : flex;
+  justify-content: end;
+  align-items    : end;
+}

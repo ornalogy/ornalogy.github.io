@@ -1,0 +1,11 @@
+{
+  "extends": "@nodutilus/project-config/tsconfig",
+  "compilerOptions": {
+    "lib": [
+      "webworker",
+      "ESNext",
+      "DOM"
+    ],
+    "esModuleInterop": true
+  }
+}
