@@ -27,6 +27,7 @@
   --ornalogy-lite-padding              : .4rem .6rem;
   --ornalogy-input-padding             : .4rem .6rem;
   --ornalogy-label-padding             : 0rem .6rem;
+  --ornalogy-tile-item-hover           : #76767676;
 }
 
 .ornalogy {
@@ -164,9 +165,13 @@
 }
 
 .ornalogy__section__row {
-  line-height: 2.4rem;
   gap        : 0.8rem;
   display    : flex;
+  align-items: baseline;
+}
+
+label.ornalogy__section__row {
+  line-height: 2.4rem;
   align-items: center;
 }
 
@@ -207,6 +212,11 @@
   flex-wrap: wrap;
 }
 
+.ornalogy__tile_tapped .ornalogy__tile__item:active {
+  background-color: var(--ornalogy-tile-item-hover);
+  border-color    : var(--ornalogy-border-color);
+}
+
 .ornalogy__tile__item {
   border-radius: .3rem;
   padding      : .2rem;
@@ -224,6 +234,12 @@
 .ornalogy__pixel_img32 {
   height         : 32px;
   width          : 32px;
+  image-rendering: pixelated;
+}
+
+.ornalogy__pixel_img48 {
+  height         : 48px;
+  width          : 48px;
   image-rendering: pixelated;
 }
 
