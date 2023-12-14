@@ -5,6 +5,7 @@
   --ornalogy-main-color                : #e7e7e7;
   --ornalogy-block-bg-color            : #1e1e1ecc;
   --ornalogy-block-border-color        : #1c1c1c;
+  --ornalogy-label-bg-color            : #232323;
   --ornalogy-popup-bg-color            : #262626cc;
   --ornalogy-border-color              : #333;
   --ornalogy-border-radius             : .4rem;
@@ -25,6 +26,7 @@
   --ornalogy-base-padding              : .6rem .8rem;
   --ornalogy-lite-padding              : .4rem .6rem;
   --ornalogy-input-padding             : .4rem .6rem;
+  --ornalogy-label-padding             : 0rem .6rem;
 }
 
 .ornalogy {
@@ -166,6 +168,36 @@
   gap        : 0.8rem;
   display    : flex;
   align-items: center;
+}
+
+.ornalogy__section__group {
+  border        : 1px solid;
+  display       : flex;
+  flex-direction: column;
+  border-color  : var(--ornalogy-border-color);
+  border-radius : var(--ornalogy-border-radius);
+  padding       : var(--ornalogy-lite-padding);
+}
+
+.ornalogy__section__group:has(.ornalogy__section__group__labelblock) {
+  margin-top: 1rem;
+}
+
+.ornalogy__section__group__labelblock {
+  margin-top     : -1.4rem;
+  gap            : 1rem;
+  display        : flex;
+  justify-content: space-between;
+}
+
+.ornalogy__section__group__label {
+  font-size    : 1.4rem;
+  border       : 1px solid;
+  display      : inline-flex;
+  background   : var(--ornalogy-label-bg-color);
+  border-color : var(--ornalogy-border-color);
+  border-radius: var(--ornalogy-border-radius);
+  padding      : var(--ornalogy-label-padding);
 }
 
 .ornalogy__popup {
