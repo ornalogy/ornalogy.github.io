@@ -200,6 +200,33 @@
   padding      : var(--ornalogy-label-padding);
 }
 
+.ornalogy__tile {
+  gap      : .2rem;
+  width    : 100%;
+  display  : flex;
+  flex-wrap: wrap;
+}
+
+.ornalogy__tile__item {
+  border-radius: .3rem;
+  padding      : .2rem;
+  border       : 1px solid transparent;
+  display      : flex;
+  align-items  : flex-start;
+}
+
+.ornalogy__tile__col {
+  display       : flex;
+  flex-direction: column;
+  align-items   : center;
+}
+
+.ornalogy__pixel_img32 {
+  height         : 32px;
+  width          : 32px;
+  image-rendering: pixelated;
+}
+
 .ornalogy__popup {
   top            : 0;
   left           : 0;
