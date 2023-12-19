@@ -73,6 +73,31 @@ function safely(fn, ...args) {
 }
 
 
+/** @type {WeakSet<((...args:any)=>Promise<void>)|((...args:any)=>void)>} */
+const ltMem = new WeakSet()
+
+/**
+ * @param {((...args:any)=>Promise<void>)|((...args:any)=>void)} fn
+ * @param  {...any} args
+ * @returns {()=>any}
+ */
+function longTouch(fn, ...args) {
+  return () => {
+    if (ltMem.has(fn)) {
+              ltMem.delete(fn)
+    } else {
+      ltMem.add(fn)
+      setTimeout(() => {
+        if (ltMem.has(fn)) {
+          safely(fn, ...args)()
+          ltMem.delete(fn)
+        }
+      }, 1400)
+    }
+  }
+}
+
+
 /**
  * @typedef FooterConfig
  * @property {()=>void} [back]
@@ -243,5 +268,5 @@ function showMainMenu() {
 }
 
 
-export { showPopup, showError, safely, showSections, registerMainMenu, showMainMenu }
+export { showPopup, showError, safely, longTouch, showSections, registerMainMenu, showMainMenu }
 export * as settings from './settings.js'
