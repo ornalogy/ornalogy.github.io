@@ -84,7 +84,7 @@ const ltMem = new WeakSet()
 function longTouch(fn, ...args) {
   return () => {
     if (ltMem.has(fn)) {
-              ltMem.delete(fn)
+      ltMem.delete(fn)
     } else {
       ltMem.add(fn)
       setTimeout(() => {
