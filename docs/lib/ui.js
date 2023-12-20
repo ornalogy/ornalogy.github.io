@@ -183,6 +183,7 @@ let lastMenuSection = null
  * @property {string} [checkboxOption]
  * @property {()=>void} [configButton]
  * @property {import('@notml/core').OOM} [section]
+ * @property {()=>any} [onopen]
  */
 /**
  * @param {MainMenuItem[]} mainMenu
@@ -231,6 +232,7 @@ function registerMainMenu(mainMenu, config) {
                 showMainMenu()
               }
             })
+            if (item.onopen) item.onopen()
           }
         }
       }))
