@@ -138,9 +138,9 @@ function showSections(section, config = {}) {
       class: 'ornalogy__main__footer__button',
       onclick: () => setTimeout(hideSections, 200)
     }))
-  }
-  if (config.back && !isClose) {
-    footer(oom.div({ class: 'ornalogy__main__footer__space' }))
+    if (config.back) {
+      footer(oom.div({ class: 'ornalogy__main__footer__space' }))
+    }
   }
 
   if (footer.dom.childNodes.length) {
