@@ -165,12 +165,11 @@ function getSetting(name) {
 
 
 /**
- *
  * @param {(settings:{[name:string]:any})=>void} fn
- * @param {boolean} [withDelay]
+ * @param {{withDelay?:boolean, once?:boolean}} [opts]
  */
-function onChangeSettings(fn, withDelay) {
-  if (withDelay) {
+function onChangeSettings(fn, opts = {}) {
+  if (opts.withDelay) {
     changeSettingsWithDelayFN.add(fn)
   } else {
     changeSettingsFN.add(fn)
@@ -178,4 +177,24 @@ function onChangeSettings(fn, withDelay) {
 }
 
 
-export { registerSettingElements, applySettings, updateSetting, getSetting, onChangeSettings }
+/**
+ * @param {string} name
+ * @param {()=>any} fn
+ */
+function onFirstActivateSetting(name, fn) {
+  if (settings[name]) {
+    fn()
+  } else {
+    const activate = settings => {
+      if (settings[name]) {
+        changeSettingsFN.delete(activate)
+        fn()
+      }
+    }
+
+    changeSettingsFN.add(activate)
+  }
+}
+
+
+export { registerSettingElements, applySettings, updateSetting, getSetting, onChangeSettings, onFirstActivateSetting }
