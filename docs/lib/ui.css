@@ -5,6 +5,7 @@
   --ornalogy-main-color                : #e7e7e7;
   --ornalogy-block-bg-color            : #1e1e1ecc;
   --ornalogy-block-border-color        : #1c1c1c;
+  --ornalogy-label-bg-color            : #232323;
   --ornalogy-popup-bg-color            : #262626cc;
   --ornalogy-border-color              : #333;
   --ornalogy-border-radius             : .4rem;
@@ -25,6 +26,8 @@
   --ornalogy-base-padding              : .6rem .8rem;
   --ornalogy-lite-padding              : .4rem .6rem;
   --ornalogy-input-padding             : .4rem .6rem;
+  --ornalogy-label-padding             : 0rem .6rem;
+  --ornalogy-tile-item-hover           : #76767676;
 }
 
 .ornalogy {
@@ -162,10 +165,82 @@
 }
 
 .ornalogy__section__row {
-  line-height: 2.4rem;
   gap        : 0.8rem;
   display    : flex;
+  align-items: baseline;
+}
+
+label.ornalogy__section__row {
+  line-height: 2.4rem;
   align-items: center;
+}
+
+.ornalogy__section__group {
+  border        : 1px solid;
+  display       : flex;
+  flex-direction: column;
+  border-color  : var(--ornalogy-border-color);
+  border-radius : var(--ornalogy-border-radius);
+  padding       : var(--ornalogy-lite-padding);
+}
+
+.ornalogy__section__group:has(.ornalogy__section__group__labelblock) {
+  margin-top: 1rem;
+}
+
+.ornalogy__section__group__labelblock {
+  margin-top     : -1.4rem;
+  gap            : 1rem;
+  display        : flex;
+  justify-content: space-between;
+}
+
+.ornalogy__section__group__label {
+  font-size    : 1.4rem;
+  border       : 1px solid;
+  display      : inline-flex;
+  background   : var(--ornalogy-label-bg-color);
+  border-color : var(--ornalogy-border-color);
+  border-radius: var(--ornalogy-border-radius);
+  padding      : var(--ornalogy-label-padding);
+}
+
+.ornalogy__tile {
+  gap      : .2rem;
+  width    : 100%;
+  display  : flex;
+  flex-wrap: wrap;
+}
+
+.ornalogy__tile_tapped .ornalogy__tile__item:active {
+  background-color: var(--ornalogy-tile-item-hover);
+  border-color    : var(--ornalogy-border-color);
+}
+
+.ornalogy__tile__item {
+  border-radius: .3rem;
+  padding      : .2rem;
+  border       : 1px solid transparent;
+  display      : flex;
+  align-items  : flex-start;
+}
+
+.ornalogy__tile__col {
+  display       : flex;
+  flex-direction: column;
+  align-items   : center;
+}
+
+.ornalogy__pixel_img32 {
+  height         : 32px;
+  width          : 32px;
+  image-rendering: pixelated;
+}
+
+.ornalogy__pixel_img48 {
+  height         : 48px;
+  width          : 48px;
+  image-rendering: pixelated;
 }
 
 .ornalogy__popup {
@@ -298,4 +373,13 @@
 
 .ornalogy__floating__stop .stop_circle {
   color: #ce9178;
+}
+
+.ornalogy__blocked_overlay {
+  z-index : 99;
+  top     : 0;
+  left    : 0;
+  right   : 0;
+  bottom  : 0;
+  position: absolute;
 }

@@ -73,6 +73,31 @@ function safely(fn, ...args) {
 }
 
 
+/** @type {WeakSet<((...args:any)=>Promise<void>)|((...args:any)=>void)>} */
+const ltMem = new WeakSet()
+
+/**
+ * @param {((...args:any)=>Promise<void>)|((...args:any)=>void)} fn
+ * @param  {...any} args
+ * @returns {()=>any}
+ */
+function longTouch(fn, ...args) {
+  return () => {
+    if (ltMem.has(fn)) {
+      ltMem.delete(fn)
+    } else {
+      ltMem.add(fn)
+      setTimeout(() => {
+        if (ltMem.has(fn)) {
+          safely(fn, ...args)()
+          ltMem.delete(fn)
+        }
+      }, 1400)
+    }
+  }
+}
+
+
 /**
  * @typedef FooterConfig
  * @property {()=>void} [back]
@@ -113,9 +138,9 @@ function showSections(section, config = {}) {
       class: 'ornalogy__main__footer__button',
       onclick: () => setTimeout(hideSections, 200)
     }))
-  }
-  if (config.back && !isClose) {
-    footer(oom.div({ class: 'ornalogy__main__footer__space' }))
+    if (config.back) {
+      footer(oom.div({ class: 'ornalogy__main__footer__space' }))
+    }
   }
 
   if (footer.dom.childNodes.length) {
@@ -147,6 +172,8 @@ const menuGroups = {}
 /** @type {MenuConfig} */
 const menuConfig = {}
 const menu = oom.div({ class: 'ornalogy__mainmenu' })
+/** @type {import('@notml/core').OOM} */
+let lastMenuSection = null
 
 /**
  * @typedef MainMenuItem
@@ -156,6 +183,7 @@ const menu = oom.div({ class: 'ornalogy__mainmenu' })
  * @property {string} [checkboxOption]
  * @property {()=>void} [configButton]
  * @property {import('@notml/core').OOM} [section]
+ * @property {()=>any} [onopen]
  */
 /**
  * @param {MainMenuItem[]} mainMenu
@@ -196,7 +224,16 @@ function registerMainMenu(mainMenu, config) {
 
       itemElm(oom.button(item.name, {
         onclick: () => {
-          if (item.section) showSections(item.section, { back: showMainMenu })
+          if (item.section) {
+            lastMenuSection = item.section
+            showSections(item.section, {
+              back: () => {
+                lastMenuSection = null
+                showMainMenu()
+              }
+            })
+            if (item.onopen) item.onopen()
+          }
         }
       }))
 
@@ -220,9 +257,18 @@ function showMainMenu() {
   elms.push(oom.div({ class: 'ornalogy__section' }, menu))
   if (menuConfig.footer) elms.push(menuConfig.footer)
 
-  showSections(oom()(...elms), { canBeClosed: menuConfig.canBeClosed })
+  if (lastMenuSection) {
+    showSections(lastMenuSection, {
+      back: () => {
+        lastMenuSection = null
+        showMainMenu()
+      }
+    })
+  } else {
+    showSections(oom()(...elms), { canBeClosed: menuConfig.canBeClosed })
+  }
 }
 
 
-export { showPopup, showError, safely, showSections, registerMainMenu, showMainMenu }
+export { showPopup, showError, safely, longTouch, showSections, registerMainMenu, showMainMenu }
 export * as settings from './settings.js'
