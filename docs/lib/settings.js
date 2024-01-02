@@ -142,7 +142,16 @@ function registerSettingElements(elm) {
  * @param {{[name:string]:any}} inputSettings
  */
 function applySettings(inputSettings) {
-  Object.assign(settings, inputSettings)
+  if (Object.keys(inputSettings).length) {
+    for (const name in settings) {
+      if (!(name in inputSettings)) {
+        updateSetting(name, undefined)
+      }
+    }
+    for (const [name, value] of Object.entries(inputSettings)) {
+      updateSetting(name, value)
+    }
+  }
 }
 
 
