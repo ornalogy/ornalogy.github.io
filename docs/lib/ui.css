@@ -217,6 +217,14 @@ label.ornalogy__section__row {
   border-color    : var(--ornalogy-border-color);
 }
 
+.ornalogy__tile_selected .ornalogy__tile__item>input[type="checkbox"]:first-child {
+  display: none;
+}
+
+.ornalogy__tile_selected .ornalogy__tile__item:has(>input:checked) {
+  background-color: var(--ornalogy-tile-item-hover);
+}
+
 .ornalogy__tile__item {
   border-radius: .3rem;
   padding      : .2rem;
@@ -240,6 +248,12 @@ label.ornalogy__section__row {
 .ornalogy__pixel_img48 {
   height         : 48px;
   width          : 48px;
+  image-rendering: pixelated;
+}
+
+.ornalogy__pixel_img64 {
+  height         : 64px;
+  width          : 64px;
   image-rendering: pixelated;
 }
 
