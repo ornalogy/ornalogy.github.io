@@ -93,7 +93,11 @@ function onChangeSetting(element) {
 function updateElements(name, value, element) {
   const settingElms = elements[name] || []
 
-  settings[name] = value
+  if (typeof value === 'undefined') {
+    delete settings[name]
+  } else {
+    settings[name] = value
+  }
   for (const settingElm of settingElms) {
     if (settingElm !== element) {
       setSettingValue(settingElm, value)
@@ -145,7 +149,7 @@ function applySettings(inputSettings) {
   if (Object.keys(inputSettings).length) {
     for (const name in settings) {
       if (!(name in inputSettings)) {
-        updateSetting(name, undefined)
+        updateSetting(name)
       }
     }
     for (const [name, value] of Object.entries(inputSettings)) {
@@ -157,7 +161,7 @@ function applySettings(inputSettings) {
 
 /**
  * @param {string} name
- * @param {any} value
+ * @param {any} [value]
  */
 function updateSetting(name, value) {
   if (settings[name] !== value) updateElements(name, value)
@@ -166,10 +170,11 @@ function updateSetting(name, value) {
 
 /**
  * @param {string} name
+ * @param {any} defaults
  * @returns {any}
  */
-function getSetting(name) {
-  return settings[name]
+function getSetting(name, defaults) {
+  return name in settings ? settings[name] : defaults
 }
 
 
