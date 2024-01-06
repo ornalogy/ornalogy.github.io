@@ -305,6 +305,10 @@ label.ornalogy__section__row {
   white-space: pre-wrap;
 }
 
+.ornalogy__popup__message_l {
+  text-align: left;
+}
+
 .ornalogy__popup__actions {
   gap    : .5rem;
   display: flex;
