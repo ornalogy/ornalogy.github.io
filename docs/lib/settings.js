@@ -77,7 +77,7 @@ function setSettingValue(element, value) {
 /**
  * @param {HTMLElement} element
  */
-function onChangeSetting(element) {
+function onChangeSettingElm(element) {
   const name = element.getAttribute('setting')
   const value = getSettingValue(element)
 
@@ -137,7 +137,7 @@ function registerSettingElements(elm) {
 
     if (!(name in elements)) elements[name] = new Set()
     elements[name].add(settingElm)
-    settingElm.addEventListener('change', () => onChangeSetting(settingElm))
+    settingElm.addEventListener('change', () => onChangeSettingElm(settingElm))
   }
 }
 

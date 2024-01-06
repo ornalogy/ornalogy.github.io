@@ -158,10 +158,13 @@
 }
 
 .ornalogy__section__title {
-  font-size  : 1.4rem;
-  gap        : 0.8rem;
-  display    : flex;
-  align-items: center;
+  font-size    : 1.4rem;
+  line-height  : 2.8rem;
+  gap          : 0.8rem;
+  display      : flex;
+  align-items  : center;
+  border-bottom: 1px solid;
+  border-color : var(--ornalogy-border-color);
 }
 
 .ornalogy__section__row {
