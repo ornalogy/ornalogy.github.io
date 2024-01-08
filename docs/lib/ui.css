@@ -58,6 +58,7 @@
   padding         : var(--ornalogy-input-padding);
 }
 
+.ornalogy input[type="radio"],
 .ornalogy input[type="checkbox"] {
   height: 1.2rem;
   width : 1.2rem;
@@ -221,6 +222,7 @@ label.ornalogy__section__row {
   border-color    : var(--ornalogy-border-color);
 }
 
+.ornalogy__tile_selected .ornalogy__tile__item>input[type="radio"]:first-child,
 .ornalogy__tile_selected .ornalogy__tile__item>input[type="checkbox"]:first-child {
   display: none;
 }
