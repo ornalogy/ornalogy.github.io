@@ -89,6 +89,10 @@
   box-shadow  : var(--ornalogy-elevation-1r);
 }
 
+.ornalogy__flex_grow_1 {
+  flex-grow: 1;
+}
+
 .ornalogy__main {
   top             : 0;
   right           : 0;
@@ -231,6 +235,10 @@ label.ornalogy__section__row {
   background-color: var(--ornalogy-tile-item-hover);
 }
 
+.ornalogy__tile_selected .ornalogy__tile__item:has(>input:checked):has(.ornalogy__tile__details) {
+  width: 100%;
+}
+
 .ornalogy__tile__item {
   border-radius: .3rem;
   padding      : .2rem;
@@ -239,10 +247,29 @@ label.ornalogy__section__row {
   align-items  : flex-start;
 }
 
+.ornalogy__tile__row {
+  width      : 100%;
+  display    : flex;
+  align-items: flex-start;
+  align-items: center;
+}
+
 .ornalogy__tile__col {
   display       : flex;
   flex-direction: column;
   align-items   : center;
+}
+
+.ornalogy__tile__details {
+  gap        : .3rem;
+  padding    : .3rem;
+  width      : 100%;
+  display    : none;
+  align-items: baseline;
+}
+
+.ornalogy__tile_selected .ornalogy__tile__item:has(>input:checked) .ornalogy__tile__details {
+  display: flex;
 }
 
 .ornalogy__pixel_img32 {
