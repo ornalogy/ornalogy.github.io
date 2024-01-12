@@ -290,6 +290,14 @@ label.ornalogy__section__row {
   image-rendering: pixelated;
 }
 
+.ornalogy__img_crop52 {
+  height         : 52px;
+  width          : 52px;
+  display        : flex;
+  align-items    : center;
+  justify-content: center;
+}
+
 .ornalogy__popup {
   top            : 0;
   left           : 0;
