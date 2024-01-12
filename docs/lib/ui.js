@@ -172,8 +172,8 @@ const menuGroups = {}
 /** @type {MenuConfig} */
 const menuConfig = {}
 const menu = oom.div({ class: 'ornalogy__mainmenu' })
-/** @type {import('@notml/core').OOM} */
-let lastMenuSection = null
+/** @type {MainMenuItem} */
+let lastMenuItem = null
 
 /**
  * @typedef MainMenuItem
@@ -225,10 +225,10 @@ function registerMainMenu(mainMenu, config) {
       itemElm(oom.button(item.name, {
         onclick: () => {
           if (item.section) {
-            lastMenuSection = item.section
+            lastMenuItem = item
             showSections(item.section, {
               back: () => {
-                lastMenuSection = null
+                lastMenuItem = null
                 showMainMenu()
               }
             })
@@ -257,13 +257,14 @@ function showMainMenu() {
   elms.push(oom.div({ class: 'ornalogy__section' }, menu))
   if (menuConfig.footer) elms.push(menuConfig.footer)
 
-  if (lastMenuSection) {
-    showSections(lastMenuSection, {
+  if (lastMenuItem) {
+    showSections(lastMenuItem.section, {
       back: () => {
-        lastMenuSection = null
+        lastMenuItem = null
         showMainMenu()
       }
     })
+    if (lastMenuItem.onopen) lastMenuItem.onopen()
   } else {
     showSections(oom()(...elms), { canBeClosed: menuConfig.canBeClosed })
   }

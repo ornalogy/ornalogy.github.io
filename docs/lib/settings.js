@@ -77,7 +77,7 @@ function setSettingValue(element, value) {
 /**
  * @param {HTMLElement} element
  */
-function onChangeSetting(element) {
+function onChangeSettingElm(element) {
   const name = element.getAttribute('setting')
   const value = getSettingValue(element)
 
@@ -93,7 +93,11 @@ function onChangeSetting(element) {
 function updateElements(name, value, element) {
   const settingElms = elements[name] || []
 
-  settings[name] = value
+  if (typeof value === 'undefined') {
+    delete settings[name]
+  } else {
+    settings[name] = value
+  }
   for (const settingElm of settingElms) {
     if (settingElm !== element) {
       setSettingValue(settingElm, value)
@@ -133,7 +137,7 @@ function registerSettingElements(elm) {
 
     if (!(name in elements)) elements[name] = new Set()
     elements[name].add(settingElm)
-    settingElm.addEventListener('change', () => onChangeSetting(settingElm))
+    settingElm.addEventListener('change', () => onChangeSettingElm(settingElm))
   }
 }
 
@@ -142,13 +146,22 @@ function registerSettingElements(elm) {
  * @param {{[name:string]:any}} inputSettings
  */
 function applySettings(inputSettings) {
-  Object.assign(settings, inputSettings)
+  if (Object.keys(inputSettings).length) {
+    for (const name in settings) {
+      if (!(name in inputSettings)) {
+        updateSetting(name)
+      }
+    }
+    for (const [name, value] of Object.entries(inputSettings)) {
+      updateSetting(name, value)
+    }
+  }
 }
 
 
 /**
  * @param {string} name
- * @param {any} value
+ * @param {any} [value]
  */
 function updateSetting(name, value) {
   if (settings[name] !== value) updateElements(name, value)
@@ -157,10 +170,11 @@ function updateSetting(name, value) {
 
 /**
  * @param {string} name
+ * @param {any} defaults
  * @returns {any}
  */
-function getSetting(name) {
-  return settings[name]
+function getSetting(name, defaults) {
+  return name in settings ? settings[name] : defaults
 }
 
 
