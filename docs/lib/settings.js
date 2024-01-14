@@ -146,9 +146,18 @@ function registerSettingElements(elm) {
  * @param {{[name:string]:any}} inputSettings
  */
 function applySettings(inputSettings) {
-  if (Object.keys(inputSettings).length) {
+  if (inputSettings) {
+    /** @type {Set<string>} */
+    const restored = new Set()
+
     for (const name in settings) {
       if (!(name in inputSettings)) {
+        restored.add(name)
+        updateSetting(name)
+      }
+    }
+    for (const name of Object.keys(elements)) {
+      if (!(name in inputSettings) && !restored.has(name)) {
         updateSetting(name)
       }
     }
