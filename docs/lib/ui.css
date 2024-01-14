@@ -441,4 +441,9 @@ label.ornalogy__section__row {
   right   : 0;
   bottom  : 0;
   position: absolute;
+  background: linear-gradient(0deg,
+      #262626aa,
+      #0000,
+      #0000,
+      #262626aa);
 }
