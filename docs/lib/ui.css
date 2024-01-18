@@ -58,6 +58,10 @@
   padding         : var(--ornalogy-input-padding);
 }
 
+.ornalogy textarea {
+  width: 100%;
+}
+
 .ornalogy input[type="radio"],
 .ornalogy input[type="checkbox"] {
   height: 1.2rem;
@@ -184,6 +188,7 @@ label.ornalogy__section__row {
 }
 
 .ornalogy__section__group {
+  gap           : .5rem;
   border        : 1px solid;
   display       : flex;
   flex-direction: column;
@@ -197,8 +202,7 @@ label.ornalogy__section__row {
 }
 
 .ornalogy__section__group__labelblock {
-  margin-top     : -1.4rem;
-  margin-bottom  : .4rem;
+  margin-top     : -1.5rem;
   gap            : 1rem;
   display        : flex;
   justify-content: space-between;
