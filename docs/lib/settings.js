@@ -107,12 +107,14 @@ function updateElements(name, value, element) {
   for (const fn of changeSettingsFN) {
     fn(settings)
   }
-  if (changeSettingsWithDelayTimer) clearTimeout(changeSettingsWithDelayTimer)
-  changeSettingsWithDelayTimer = setTimeout(() => {
-    for (const fn of changeSettingsWithDelayFN) {
-      fn(settings)
-    }
-  }, 1000)
+  if (changeSettingsWithDelayFN.size > 0) {
+    if (changeSettingsWithDelayTimer) clearTimeout(changeSettingsWithDelayTimer)
+    changeSettingsWithDelayTimer = setTimeout(() => {
+      for (const fn of changeSettingsWithDelayFN) {
+        fn(settings)
+      }
+    }, 1000)
+  }
 }
 
 
