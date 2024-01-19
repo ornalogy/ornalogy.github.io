@@ -466,6 +466,5 @@ label.ornalogy__section__row {
 .ornalogy__blocked_textline {
   gap             : .5rem;
   padding         : .5rem;
-  display         : flex;
   background-color: var(--ornalogy-bg-color-alpha);
 }
