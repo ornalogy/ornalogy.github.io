@@ -2,6 +2,7 @@
   --ornalogyfont-family                : Merriweather, Inter, sans-serif;
   --ornalogy-main-bg-color             : #262626;
   --ornalogy-bg-color-alpha            : #262626cc;
+  --ornalogy-bg-color-alpha2           : #262626aa;
   --ornalogy-main-color                : #e7e7e7;
   --ornalogy-block-bg-color            : #1e1e1ecc;
   --ornalogy-block-border-color        : #1c1c1c;
@@ -466,5 +467,5 @@ label.ornalogy__section__row {
 .ornalogy__blocked_textline {
   gap             : .5rem;
   padding         : .5rem;
-  background-color: var(--ornalogy-bg-color-alpha);
+  background-color: var(--ornalogy-bg-color-alpha2);
 }
