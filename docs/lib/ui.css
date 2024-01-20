@@ -464,8 +464,24 @@ label.ornalogy__section__row {
   white-space   : break-spaces;
 }
 
+.ornalogy__blocked_content {
+  overflow-y   : auto;
+  border-radius: var(--ornalogy-border-radius);
+}
+
+.ornalogy__blocked_minimize .ornalogy__blocked_content {
+  width    : 25%;
+  height   : 25%;
+  font-size: 50%;
+}
+
 .ornalogy__blocked_textline {
   gap             : .5rem;
   padding         : .5rem;
   background-color: var(--ornalogy-bg-color-alpha2);
+}
+
+
+.ornalogy__blocked_minimize .ornalogy__blocked_textline {
+  padding: .2rem;
 }
