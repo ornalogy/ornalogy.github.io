@@ -497,3 +497,7 @@ label.ornalogy__section__row {
 .ornalogy__blocked_minimize .ornalogy__blocked_textline {
   padding: .2rem;
 }
+
+.ornalogy__hidden {
+  display: none !important;
+}
