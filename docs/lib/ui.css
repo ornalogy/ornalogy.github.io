@@ -219,6 +219,11 @@ label.ornalogy__section__row {
   padding      : var(--ornalogy-label-padding);
 }
 
+.ornalogy__section__group__actions {
+  gap    : .5rem;
+  display: flex;
+}
+
 .ornalogy__section__sep {
   border-bottom: 1px solid;
   border-color : var(--ornalogy-border-color);
@@ -271,8 +276,8 @@ label.ornalogy__section__row {
 }
 
 .ornalogy__tile__details {
-  gap        : .3rem;
-  padding    : .3rem;
+  gap        : .5rem;
+  padding    : .5rem;
   width      : 100%;
   display    : none;
   align-items: baseline;
@@ -280,6 +285,13 @@ label.ornalogy__section__row {
 
 .ornalogy__tile_selected .ornalogy__tile__item:has(>input:checked) .ornalogy__tile__details {
   display: flex;
+}
+
+.ornalogy__tile__actions {
+  display        : flex;
+  justify-content: flex-end;
+  width          : 100%;
+  gap            : .5rem;
 }
 
 .ornalogy__pixel_img32 {
