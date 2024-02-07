@@ -37,3 +37,14 @@ html {
   justify-content: end;
   align-items    : end;
 }
+
+.ornalogy__copyleft {
+  gap    : .3rem;
+  display: flex;
+}
+
+.ornalogy__copyleft::before {
+  transform: rotateY(180deg);
+  display  : inline-block;
+  content  : '©';
+}
