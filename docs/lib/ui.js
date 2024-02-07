@@ -237,7 +237,7 @@ function registerMainMenu(mainMenu, config) {
                 lastMenuItem = null
                 showMainMenu()
               },
-              canBeClosed: config.canBeClosed
+              canBeClosed: menuConfig.canBeClosed
             })
             if (item.onopen) item.onopen()
           }
