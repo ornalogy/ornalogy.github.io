@@ -184,6 +184,8 @@ let lastMenuItem = null
  * @property {()=>void} [configButton]
  * @property {import('@notml/core').OOM} [section]
  * @property {()=>any} [onopen]
+ * @property {string} [url]
+ * @property {string} [externalSite]
  */
 /**
  * @param {MainMenuItem[]} mainMenu
@@ -224,7 +226,11 @@ function registerMainMenu(mainMenu, config) {
 
       itemElm(oom.button(item.name, {
         onclick: () => {
-          if (item.section) {
+          if (item.url) { // @ts-ignore
+            window.location = item.url
+          } else if (item.externalSite) {
+            window.open(item.externalSite, '_blank')
+          } else if (item.section) {
             lastMenuItem = item
             showSections(item.section, {
               back: () => {

@@ -4,6 +4,7 @@
   --ornalogy-bg-color-alpha            : #262626cc;
   --ornalogy-bg-color-alpha2           : #262626aa;
   --ornalogy-main-color                : #e7e7e7;
+  --ornalogy-unimportant-color         : #b7b7b7;
   --ornalogy-block-bg-color            : #1e1e1ecc;
   --ornalogy-block-border-color        : #1c1c1c;
   --ornalogy-label-bg-color            : #232323;
@@ -67,6 +68,17 @@
 .ornalogy input[type="checkbox"] {
   height: 1.2rem;
   width : 1.2rem;
+}
+
+.ornalogy label:has(a) {
+  display       : flex;
+  flex-direction: column;
+}
+
+.ornalogy label:has(a) span {
+  font-size  : .8rem;
+  margin-left: 1rem;
+  color      : var(--ornalogy-unimportant-color);
 }
 
 .ornalogy button {
