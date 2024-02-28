@@ -1,3 +1,4 @@
+import './ui.js'
 import { appHost, apiFetch } from './api.js'
 
 // @ts-ignore
