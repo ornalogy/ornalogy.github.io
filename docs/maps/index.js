@@ -12,10 +12,24 @@ async function checkLogin() {
     const chat = params.get('chat')
     const city = params.get('city')
 
+    if (!chat && !city) return loadMaps()
     if (chat && !city) return loadCities(chat)
   } else {
     await showLoginForm(data.token)
     checkLogin()
+  }
+}
+
+
+async function loadMaps() {
+  /** @type {{success:boolean,}} */
+  const data = await apiFetch('load-maps')
+
+  if (!data.success) {
+    await showError('Нет доступа к картам!') // @ts-ignore
+    location = '/'
+  } else {
+    console.log(data)
   }
 }
 
@@ -42,6 +56,9 @@ async function loadCities(chat) {
 
     for (const city of data.cities) {
       cities(oom.a({ href: `?chat=${chat}&city=${city.uuid}` }, city.nameRU))
+    }
+    if (!data.cities.length) {
+      cities('Нет данных')
     }
 
     showSections(section, { canBeClosed: false })
