@@ -14,6 +14,7 @@ async function checkLogin() {
 
     if (!chat && !city) return loadMaps()
     if (chat && !city) return loadCities(chat)
+    if (chat && city) return loadMarkers(chat, city)
   } else {
     await showLoginForm(data.token)
     checkLogin()
@@ -62,6 +63,23 @@ async function loadCities(chat) {
     }
 
     showSections(section, { canBeClosed: false })
+  }
+}
+
+
+/**
+ * @param {string} chat
+ * @param {string} city
+ */
+async function loadMarkers(chat, city) {
+  /** @type {{success:boolean}} */
+  const data = await apiFetch('map-load-markers', { chat, city })
+
+  if (!data.success) {
+    await showError('Нет доступа к картам!') // @ts-ignore
+    location = '/'
+  } else {
+    console.log(data)
   }
 }
 
