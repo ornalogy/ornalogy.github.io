@@ -58,6 +58,15 @@ html {
   user-select: none;
 }
 
+.ornalogy h1,
+.ornalogy h2,
+.ornalogy h3,
+.ornalogy h4,
+.ornalogy h5,
+.ornalogy h6 {
+  margin: 1rem 0 0;
+}
+
 .ornalogy a {
   color: var(--ornalogy-link-color);
 }

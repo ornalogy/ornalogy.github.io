@@ -22,19 +22,6 @@ async function checkLogin() {
 }
 
 
-async function loadMaps() {
-  /** @type {{success:boolean,}} */
-  const data = await apiFetch('load-maps')
-
-  if (!data.success) {
-    await showError('Нет доступа к картам!') // @ts-ignore
-    location = '/'
-  } else {
-    console.log(data)
-  }
-}
-
-
 /**
  * @typedef MapCity
  * @property {string} uuid
@@ -42,27 +29,69 @@ async function loadMaps() {
  * @property {string} nameRU
  */
 /**
+ * @typedef MapItem
+ * @property {string} title
+ * @property {MapCity[]} cities
+ */
+/**
+ * @param {string} chat
+ * @param {MapItem} map
+ * @returns {import('@notml/core').OOM}
+ */
+function drawMap(chat, map) {
+  const header = oom.div({ class: 'ornalogy__site__header' }, oom.h2(map.title))
+  const cities = oom.div({ class: 'ornalogy__section' })
+  const item = oom.div(header, cities)
+
+  for (const city of map.cities) {
+    cities(oom.a({ href: `?chat=${chat}&city=${city.uuid}` }, city.nameRU))
+  }
+  if (!map.cities.length) {
+    cities('Нет данных')
+  }
+
+  return item
+}
+
+
+/**
+ * @typedef UserMaps
+ * @property {MapCity[]} private
+ * @property {{[chat:string]:MapItem}} chats
+ */
+async function loadMaps() {
+  /** @type {{success:boolean,maps:UserMaps}} */
+  const data = await apiFetch('load-maps')
+
+  if (!data.success) {
+    await showError('Нет доступа к картам!') // @ts-ignore
+    location = '/'
+  } else {
+    const section = oom.div()
+
+    for (const [chat, map] of Object.entries(data.maps.chats)) {
+      const item = drawMap(chat, map)
+
+      section(item)
+    }
+
+    showSections(section, { canBeClosed: false })
+  }
+}
+
+
+/**
  * @param {string} chat
  */
 async function loadCities(chat) {
-  /** @type {{success:boolean,title:string,cities:MapCity[]}} */
+  /** @type {{success:boolean} & MapItem} */
   const data = await apiFetch('map-load-cities', { chat })
 
   if (!data.success) {
     await showError('Нет доступа к карте!') // @ts-ignore
     location = '/'
   } else {
-    const cities = oom.div({ class: 'ornalogy__section' })
-    const section = oom.div({ class: 'ornalogy__site__header' }, oom.h1(data.title), cities)
-
-    for (const city of data.cities) {
-      cities(oom.a({ href: `?chat=${chat}&city=${city.uuid}` }, city.nameRU))
-    }
-    if (!data.cities.length) {
-      cities('Нет данных')
-    }
-
-    showSections(section, { canBeClosed: false })
+    showSections(drawMap(chat, data), { canBeClosed: false })
   }
 }
 
