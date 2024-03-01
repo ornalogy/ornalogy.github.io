@@ -75,7 +75,10 @@ async function loadMaps() {
       section(item)
     }
 
-    showSections(section, { canBeClosed: false })
+    showSections(section, {
+      canBeClosed: false, // @ts-ignore
+      back: () => { location = '/' }
+    })
   }
 }
 
@@ -91,7 +94,10 @@ async function loadCities(chat) {
     await showError('Нет доступа к карте!') // @ts-ignore
     location = '/'
   } else {
-    showSections(drawMap(chat, data), { canBeClosed: false })
+    showSections(drawMap(chat, data), {
+      canBeClosed: false,
+      back: () => { location.search = '/maps/' }
+    })
   }
 }
 
