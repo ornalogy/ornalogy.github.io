@@ -75,6 +75,15 @@ async function loadMaps() {
       section(item)
     }
 
+    if (!Object.keys(data.maps.chats).length) {
+      section(oom.div({ class: 'ornalogy__section' }, oom
+        .p(oom
+          .span('Нет доступных карт.').br().span('Отправьте боту ')
+          .a({ href: 'https://t.me/ornaculum_bot', target: '_blanck' }, '@ornaculum_bot')
+          .span(' команду ').code('/maps').span(', и узнайте как работать с картами.'))
+      ))
+    }
+
     showSections(section, {
       canBeClosed: false, // @ts-ignore
       back: () => { location = '/' }
