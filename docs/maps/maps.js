@@ -1,4 +1,8 @@
 import { oom } from 'https://cdn.jsdelivr.net/npm/@notml/core/+esm'
+import { Map, View } from 'https://cdn.jsdelivr.net/npm/ol@9.0.0/+esm'
+import { OSM } from 'https://cdn.jsdelivr.net/npm/ol@9.0.0/source.js/+esm'
+import { Tile } from 'https://cdn.jsdelivr.net/npm/ol@9.0.0/layer.js/+esm'
+import { fromLonLat, toLonLat } from 'https://cdn.jsdelivr.net/npm/ol@9.0.0/proj.js/+esm'
 import { showError, showSections } from '../lib/ui.js'
 import { apiFetch } from '../lib/api.js'
 import { showLoginForm } from '../lib/login.js'
@@ -110,21 +114,54 @@ async function loadCities(chat) {
   }
 }
 
-
+/**
+ * @typedef MapCityCoord
+ * @property {number} osmid
+ * @property {string} nameEN
+ * @property {string} nameRU
+ * @property {number} latitude
+ * @property {number} longitude
+ * @property {{latitude:number,longitude:number}[][]} coordinates
+ */
+/**
+ * @typedef UserMap
+ * @property {MapCityCoord} city
+ */
 /**
  * @param {string} chat
  * @param {string} city
  */
 async function loadMarkers(chat, city) {
-  /** @type {{success:boolean}} */
+  /** @type {{success:boolean} & UserMap} */
   const data = await apiFetch('map-load-markers', { chat, city })
 
   if (!data.success) {
     await showError('Нет доступа к картам!') // @ts-ignore
     location = '/'
   } else {
+    document.title = data.city.nameRU + ' — ' + document.title
+
+    oom(document.body, oom
+      .div({ id: 'map' }))
+    createMap(data)
+
     console.log(data)
   }
+}
+
+
+/**
+ * @param {UserMap} mapData
+ */
+function createMap(mapData) {
+  const map = new Map({ target: 'map', layers: [new Tile({ source: new OSM() })] })
+
+  map.setView(new View({
+    center: fromLonLat([mapData.city.longitude, mapData.city.latitude]),
+    zoom: 12,
+    maxZoom: 18,
+    minZoom: 10
+  }))
 }
 
 
