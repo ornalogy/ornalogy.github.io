@@ -21,3 +21,11 @@ declare module 'https://cdn.jsdelivr.net/npm/ol@9.0.0/layer.js/+esm' {
 declare module 'https://cdn.jsdelivr.net/npm/ol@9.0.0/proj.js/+esm' {
   export * from 'ol/proj.js'
 }
+
+declare module 'https://cdn.jsdelivr.net/npm/ol@9.0.0/geom.js/+esm' {
+  export * from 'ol/geom.js'
+}
+
+declare module 'https://cdn.jsdelivr.net/npm/ol@9.0.0/style.js/+esm' {
+  export * from 'ol/style.js'
+}

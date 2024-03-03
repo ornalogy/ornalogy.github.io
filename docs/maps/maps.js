@@ -1,8 +1,10 @@
 import { oom } from 'https://cdn.jsdelivr.net/npm/@notml/core/+esm'
-import { Map, View } from 'https://cdn.jsdelivr.net/npm/ol@9.0.0/+esm'
-import { OSM } from 'https://cdn.jsdelivr.net/npm/ol@9.0.0/source.js/+esm'
-import { Tile } from 'https://cdn.jsdelivr.net/npm/ol@9.0.0/layer.js/+esm'
+import { Map, View, Feature } from 'https://cdn.jsdelivr.net/npm/ol@9.0.0/+esm'
+import { OSM, Vector as VectorSource } from 'https://cdn.jsdelivr.net/npm/ol@9.0.0/source.js/+esm'
+import { Tile, Vector as VectorLayer } from 'https://cdn.jsdelivr.net/npm/ol@9.0.0/layer.js/+esm'
 import { fromLonLat } from 'https://cdn.jsdelivr.net/npm/ol@9.0.0/proj.js/+esm'
+import { Polygon } from 'https://cdn.jsdelivr.net/npm/ol@9.0.0/geom.js/+esm'
+import { Stroke, Style } from 'https://cdn.jsdelivr.net/npm/ol@9.0.0/style.js/+esm'
 import { showError, showSections } from '../lib/ui.js'
 import { apiFetch } from '../lib/api.js'
 import { showLoginForm } from '../lib/login.js'
@@ -155,13 +157,19 @@ async function loadMarkers(chat, city) {
  */
 function createMap(mapData) {
   const map = new Map({ target: 'map', layers: [new Tile({ source: new OSM() })] })
+  const center = fromLonLat([mapData.city.longitude, mapData.city.latitude])
+  const cityBorders = []
 
-  map.setView(new View({
-    center: fromLonLat([mapData.city.longitude, mapData.city.latitude]),
-    zoom: 12,
-    maxZoom: 18,
-    minZoom: 10
-  }))
+  for (const polygonRaw of mapData.city.coordinates) {
+    const polygon = polygonRaw.map(({ latitude, longitude }) => fromLonLat([longitude, latitude]))
+    const feature = new Feature(new Polygon([polygon]))
+
+    feature.setStyle(new Style({ stroke: new Stroke({ color: 'rgba(255, 0, 0, 0.3)', width: 3 }) }))
+    cityBorders.push(feature)
+  }
+
+  map.setView(new View({ center, zoom: 12, maxZoom: 18, minZoom: 10 }))
+  map.addLayer(new VectorLayer({ source: new VectorSource({ features: cityBorders }) }))
 }
 
 
