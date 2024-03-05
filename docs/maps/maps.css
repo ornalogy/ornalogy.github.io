@@ -1,3 +1,23 @@
 #map {
   height: 100%;
 }
+
+.ornalogy__map_toolbar {
+  display     : flex;
+  top         : 0.5em;
+  left        : 2.375em;
+  margin-right: 0.5em;
+  padding     : 1px;
+}
+
+.ornalogy__map_toolbar_item {
+  padding: 2px;
+}
+
+.ol-touch .ornalogy__map_toolbar {
+  left: 3.375em;
+}
+
+.ol-touch .ornalogy__map_toolbar span {
+  font-size: 1.5em;
+}

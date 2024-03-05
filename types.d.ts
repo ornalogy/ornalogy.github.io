@@ -29,3 +29,7 @@ declare module 'https://cdn.jsdelivr.net/npm/ol@9.0.0/geom.js/+esm' {
 declare module 'https://cdn.jsdelivr.net/npm/ol@9.0.0/style.js/+esm' {
   export * from 'ol/style.js'
 }
+
+declare module 'https://cdn.jsdelivr.net/npm/ol@9.0.0/control.js/+esm' {
+  export * from 'ol/control.js'
+}

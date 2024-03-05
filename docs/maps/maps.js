@@ -5,6 +5,7 @@ import { Tile, Vector as VectorLayer } from 'https://cdn.jsdelivr.net/npm/ol@9.0
 import { fromLonLat } from 'https://cdn.jsdelivr.net/npm/ol@9.0.0/proj.js/+esm'
 import { Polygon } from 'https://cdn.jsdelivr.net/npm/ol@9.0.0/geom.js/+esm'
 import { Stroke, Style } from 'https://cdn.jsdelivr.net/npm/ol@9.0.0/style.js/+esm'
+import { Control, defaults as defaultControls } from 'https://cdn.jsdelivr.net/npm/ol@9.0.0/control.js/+esm'
 import { showError, showSections } from '../lib/ui.js'
 import { apiFetch } from '../lib/api.js'
 import { showLoginForm } from '../lib/login.js'
@@ -127,6 +128,7 @@ async function loadCities(chat) {
  */
 /**
  * @typedef UserMap
+ * @property {string} chat
  * @property {MapCityCoord} city
  */
 /**
@@ -153,10 +155,37 @@ async function loadMarkers(chat, city) {
 
 
 /**
+ * @typedef ToolBarControlOptions
+ * @property {string} chat
+ * @property {string} city
+ */
+class ToolBarControl extends Control {
+
+  /**
+   * @param {ToolBarControlOptions} options
+   */
+  constructor(options) {
+    const element = oom.div({ class: 'ol-control ol-unselectable ornalogy__map_toolbar' }, oom
+      .div({ class: 'ol-box ornalogy__map_toolbar_item' }, oom
+        .span(options.city)
+        .span(' — ')
+        .span(options.chat)
+      )
+    ).dom
+
+    super({ element })
+  }
+
+}
+
+
+/**
  * @param {UserMap} mapData
  */
 function createMap(mapData) {
-  const map = new Map({ target: 'map', layers: [new Tile({ source: new OSM() })] })
+  const toolBar = new ToolBarControl({ chat: mapData.chat, city: mapData.city.nameRU })
+  const controls = defaultControls().extend([toolBar])
+  const map = new Map({ target: 'map', controls, layers: [new Tile({ source: new OSM() })] })
   const center = fromLonLat([mapData.city.longitude, mapData.city.latitude])
   const cityBorders = []
 
