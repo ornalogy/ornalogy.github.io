@@ -4,14 +4,21 @@
 
 .ornalogy__map_toolbar {
   display     : flex;
-  top         : 0.5em;
+  top         : .5em;
   left        : 2.375em;
-  margin-right: 0.5em;
+  margin-right: .5em;
+  gap         : 1px;
   padding     : 1px;
 }
 
+.ornalogy__map_toolbar button {
+  margin: 0px;
+}
+
 .ornalogy__map_toolbar_item {
-  padding: 2px;
+  display    : flex;
+  gap        : .2em;
+  align-items: center;
 }
 
 .ol-touch .ornalogy__map_toolbar {

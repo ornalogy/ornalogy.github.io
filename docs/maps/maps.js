@@ -166,6 +166,7 @@ class ToolBarControl extends Control {
    */
   constructor(options) {
     const element = oom.div({ class: 'ol-control ol-unselectable ornalogy__map_toolbar' }, oom
+      .button('<', { onclick: () => this.back() })
       .div({ class: 'ol-box ornalogy__map_toolbar_item' }, oom
         .span(options.city)
         .span(' — ')
@@ -174,6 +175,13 @@ class ToolBarControl extends Control {
     ).dom
 
     super({ element })
+  }
+
+  back() {
+    const params = new URLSearchParams(location.search)
+
+    params.delete('city')
+    location.search = params.toString()
   }
 
 }
