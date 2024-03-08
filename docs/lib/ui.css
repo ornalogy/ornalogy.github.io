@@ -314,6 +314,7 @@ label.ornalogy__section__row {
   gap        : .5rem;
   padding    : .5rem;
   width      : 100%;
+  white-space: pre-wrap;
   display    : none;
   align-items: baseline;
 }
