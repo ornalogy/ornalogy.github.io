@@ -21,7 +21,7 @@ async function checkLogin() {
 
     if (!chat && !city) return loadMaps()
     if (chat && !city) return loadCities(chat)
-    if (chat && city) return loadMarkers(chat, city)
+    if (city) return loadMarkers(chat, city)
   } else {
     await showLoginForm(data.token)
     checkLogin()
@@ -51,7 +51,9 @@ function drawMap(chat, map) {
   const item = oom.div(header, cities)
 
   for (const city of map.cities) {
-    cities(oom.a({ href: `?chat=${chat}&city=${city.uuid}` }, city.nameRU))
+    const href = chat ? `?chat=${chat}&city=${city.uuid}` : `?city=${city.uuid}`
+
+    cities(oom.a({ href }, city.nameRU))
   }
   if (!map.cities.length) {
     cities('Нет данных')
@@ -75,6 +77,15 @@ async function loadMaps() {
     location = '/'
   } else {
     const section = oom.div()
+
+    if (data.maps.private.length) {
+      const item = drawMap(null, {
+        title: 'Персональные',
+        cities: data.maps.private
+      })
+
+      section(item)
+    }
 
     for (const [chat, map] of Object.entries(data.maps.chats)) {
       const item = drawMap(chat, map)
