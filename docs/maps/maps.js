@@ -93,7 +93,7 @@ async function loadMaps() {
       section(item)
     }
 
-    if (!Object.keys(data.maps.chats).length) {
+    if (!Object.keys(data.maps.chats).length && !data.maps.private.length) {
       section(oom.div({ class: 'ornalogy__section' }, oom
         .p(oom
           .span('Нет доступных карт.').br().span('Отправьте боту ')
