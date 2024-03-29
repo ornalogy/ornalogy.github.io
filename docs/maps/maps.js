@@ -3,13 +3,39 @@ import { Map, View, Feature } from 'https://cdn.jsdelivr.net/npm/ol@9.0.0/+esm'
 import { OSM, Vector as VectorSource } from 'https://cdn.jsdelivr.net/npm/ol@9.0.0/source.js/+esm'
 import { Tile, Vector as VectorLayer } from 'https://cdn.jsdelivr.net/npm/ol@9.0.0/layer.js/+esm'
 import { fromLonLat } from 'https://cdn.jsdelivr.net/npm/ol@9.0.0/proj.js/+esm'
-import { Polygon } from 'https://cdn.jsdelivr.net/npm/ol@9.0.0/geom.js/+esm'
-import { Stroke, Style } from 'https://cdn.jsdelivr.net/npm/ol@9.0.0/style.js/+esm'
+import { Polygon, Point } from 'https://cdn.jsdelivr.net/npm/ol@9.0.0/geom.js/+esm'
+import { Stroke, Icon, Style } from 'https://cdn.jsdelivr.net/npm/ol@9.0.0/style.js/+esm'
 import { Control, defaults as defaultControls } from 'https://cdn.jsdelivr.net/npm/ol@9.0.0/control.js/+esm'
 import { showError, showSections } from '../lib/ui.js'
 import { apiFetch } from '../lib/api.js'
 import { showLoginForm } from '../lib/login.js'
 
+/** @type {Map} */
+let map = null
+/** @type {VectorLayer} */
+let markersLayer = null
+const spriteHost = 'https://playorna.com/static/'
+const markerSprites = {
+  dungeon: 'img/shops/dungeon.png',
+  fort: 'img/shops/fort.png',
+  mystic_cave: 'img/shops/mystic_cave.png',
+  beast_den: 'img/shops/beast_den.png',
+  dragon_roost: 'img/shops/dragon_roost.png',
+  underworld_portal: 'img/shops/underworld_portal.png',
+  chaos_portal: 'img/shops/chaos_portal.png',
+  battlegrounds: 'img/shops/battlegrounds.png',
+  valley_of_gods: 'img/shops/valley_of_gods.png',
+  coliseum: 'img/shops/coliseum.png',
+  prometheus: 'img/towers/1_3.png',
+  themis: 'img/towers/2_3.png',
+  oceanus: 'img/towers/3_3.png',
+  eos: 'img/towers/4_3.png',
+  selene: 'img/towers/5_3.png',
+  demeter: 'img/shops/monument_demeter.png',
+  ithra: 'img/shops/monument_ithra.png',
+  thor: 'img/shops/monument_thor.png',
+  vulcan: 'img/shops/monument_vulcan.png'
+}
 
 async function checkLogin() {
   const data = await apiFetch('check-login')
@@ -138,29 +164,38 @@ async function loadCities(chat) {
  * @property {{latitude:number,longitude:number}[][]} coordinates
  */
 /**
+ * @typedef MapMarker
+ * @property {string} uuid
+ * @property {string} ornuuid
+ * @property {string} week
+ * @property {number} latitude
+ * @property {number} longitude
+ * @property {string} type
+ * @property {string} subtype
+ * @property {string} label
+ */
+/**
  * @typedef UserMap
  * @property {string} chat
  * @property {MapCityCoord} city
+ * @property {MapMarker[]} markers
  */
 /**
  * @param {string} chat
  * @param {string} city
+ * @param {string} [week]
  */
-async function loadMarkers(chat, city) {
+async function loadMarkers(chat, city, week) {
   /** @type {{success:boolean} & UserMap} */
-  const data = await apiFetch('map-load-markers', { chat, city })
+  const data = await apiFetch('map-load-markers', { chat, city, week })
 
   if (!data.success) {
     await showError('Нет доступа к картам!') // @ts-ignore
     location = '/'
   } else {
     document.title = data.city.nameRU + ' — ' + document.title
-
-    oom(document.body, oom
-      .div({ id: 'map' }))
-    createMap(data)
-
-    console.log(data)
+    if (!map) createMap(data)
+    updateMapMarkers(data.markers)
   }
 }
 
@@ -172,20 +207,79 @@ async function loadMarkers(chat, city) {
  */
 class ToolBarControl extends Control {
 
+  static getWeekMonday(date = new Date()) {
+    const dt = new Date(date)
+
+    return dt.setUTCDate(dt.getUTCDate() - (dt.getUTCDay() || 7) + 1) && dt.toJSON().slice(0, 10)
+  }
+
+  /** @type {string} */
+  chat
+  /** @type {string} */
+  city
+  /** @type {string[]} */
+  weeks = null
+  /** @type {import('@notml/core').OOM<HTMLSelectElement>} */
+  weekSelect = null
+
   /**
    * @param {ToolBarControlOptions} options
    */
   constructor(options) {
+    const params = new URLSearchParams(window.location.search)
+    const weekSelect = oom.select({
+      class: 'ornalogy__map_toolbar_select',
+      onclick: () => this.loadWeeks(),
+      onchange: () => this.changeWeek()
+    }, oom
+      .option(ToolBarControl.getWeekMonday())
+      .option('Загрузка...')
+    )
     const element = oom.div({ class: 'ol-control ol-unselectable ornalogy__map_toolbar' }, oom
-      .button('<', { onclick: () => this.back() })
-      .div({ class: 'ol-box ornalogy__map_toolbar_item' }, oom
-        .span(options.city)
-        .span(' — ')
-        .span(options.chat)
+      .div({ class: 'ornalogy__map_toolbar_row' }, oom
+        .button('<', { onclick: () => this.back() })
+        .div({ class: 'ol-box ornalogy__map_toolbar_item' }, oom
+          .span(options.city)
+          .span(' — ')
+          .span(options.chat || 'Персональная')
+        )
+      )
+      .div({ class: 'ornalogy__map_toolbar_row' }, oom
+        .div({ class: 'ol-box ornalogy__map_toolbar_item' }, oom
+          .span('Неделя:'), weekSelect
+        )
       )
     ).dom
 
     super({ element })
+
+    this.chat = params.get('chat')
+    this.city = params.get('city')
+    this.weekSelect = weekSelect
+  }
+
+  async loadWeeks() {
+    if (!this.weeks) {
+      this.weeks = []
+
+      /** @type {{success:boolean, weeks:string[]}} */
+      const data = await apiFetch('map-load-weeks', { chat: this.chat, city: this.city })
+
+      if (data.success) {
+        this.weekSelect({ innerHTML: '' })
+        for (const week of data.weeks) {
+          this.weekSelect(oom.option(week))
+        }
+      } else {
+        this.weekSelect({ innerHTML: '' }, oom.option('Ошибка загрузки!'))
+      }
+    }
+  }
+
+  async changeWeek() {
+    const week = this.weekSelect.dom.value
+
+    await loadMarkers(this.chat, this.city, week)
   }
 
   back() {
@@ -204,7 +298,6 @@ class ToolBarControl extends Control {
 function createMap(mapData) {
   const toolBar = new ToolBarControl({ chat: mapData.chat, city: mapData.city.nameRU })
   const controls = defaultControls().extend([toolBar])
-  const map = new Map({ target: 'map', controls, layers: [new Tile({ source: new OSM() })] })
   const center = fromLonLat([mapData.city.longitude, mapData.city.latitude])
   const cityBorders = []
 
@@ -216,8 +309,31 @@ function createMap(mapData) {
     cityBorders.push(feature)
   }
 
+  oom(document.body, oom.div({ id: 'map' }))
+  map = new Map({ target: 'map', controls, layers: [new Tile({ source: new OSM() })] })
   map.setView(new View({ center, zoom: 12, maxZoom: 18, minZoom: 10 }))
   map.addLayer(new VectorLayer({ source: new VectorSource({ features: cityBorders }) }))
+}
+
+
+/**
+ * @param {MapMarker[]} markers
+ */
+function updateMapMarkers(markers) {
+  const features = []
+
+  if (markersLayer) map.removeLayer(markersLayer)
+  for (const { latitude, longitude, type, subtype } of Object.values(markers)) {
+    const sprite = spriteHost + markerSprites[subtype || type]
+    const point = new Point(fromLonLat([longitude, latitude]))
+    const feature = new Feature({ geometry: point })
+    const style = new Style({ image: new Icon({ src: sprite, width: 64, height: 64 }) })
+
+    feature.setStyle(style)
+    features.push(feature)
+  }
+  markersLayer = new VectorLayer({ source: new VectorSource({ features }) })
+  map.addLayer(markersLayer)
 }
 
 

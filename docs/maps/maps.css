@@ -3,22 +3,48 @@
 }
 
 .ornalogy__map_toolbar {
-  display     : flex;
-  top         : .5em;
-  left        : 2.375em;
-  margin-right: .5em;
-  gap         : 1px;
-  padding     : 1px;
+  display       : flex;
+  flex-direction: column;
+  top           : .5em;
+  left          : 2.375em;
+  right         : .5em;
+  gap           : 1px;
+  padding       : 1px;
 }
 
 .ornalogy__map_toolbar button {
-  margin: 0px;
+  margin   : 0px;
+  min-width: 1.375em;
+}
+
+.ornalogy__map_toolbar_row {
+  display   : flex;
+  overflow  : hidden;
+  gap       : 1px;
+  width     : 100%;
+  min-height: 1.375em;
 }
 
 .ornalogy__map_toolbar_item {
-  display    : flex;
-  gap        : .2em;
   align-items: center;
+  display    : flex;
+  overflow   : hidden;
+  white-space: nowrap;
+  gap        : .2em;
+  padding    : 0 .2em;
+  width      : 100%;
+}
+
+.ornalogy__map_toolbar_item span:last-child {
+  overflow     : hidden;
+  text-overflow: ellipsis;
+  white-space  : nowrap;
+  width        : 100%;
+}
+
+.ornalogy__map_toolbar_select {
+  border    : none;
+  background: none;
 }
 
 .ol-touch .ornalogy__map_toolbar {
@@ -27,4 +53,9 @@
 
 .ol-touch .ornalogy__map_toolbar span {
   font-size: 1.5em;
+}
+
+.ol-touch .ornalogy__map_toolbar select {
+  font-size : 1.4em;
+  min-height: 1.375em;
 }
