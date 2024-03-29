@@ -36,6 +36,16 @@ const markerSprites = {
   thor: 'img/shops/monument_thor.png',
   vulcan: 'img/shops/monument_vulcan.png'
 }
+/**
+ * @typedef SpriteProps
+ * @property {number} width
+ * @property {number} height
+ */
+const spritePropsDefault = { width: 64, height: 64 }
+const spriteProps = {
+  tower: { width: 48, height: 96 }
+}
+
 
 async function checkLogin() {
   const data = await apiFetch('check-login')
@@ -229,7 +239,7 @@ class ToolBarControl extends Control {
     const params = new URLSearchParams(window.location.search)
     const weekSelect = oom.select({
       class: 'ornalogy__map_toolbar_select',
-      onclick: () => this.loadWeeks(),
+      onmousedown: () => this.loadWeeks(),
       onchange: () => this.changeWeek()
     }, oom
       .option(ToolBarControl.getWeekMonday())
@@ -324,10 +334,12 @@ function updateMapMarkers(markers) {
 
   if (markersLayer) map.removeLayer(markersLayer)
   for (const { latitude, longitude, type, subtype } of Object.values(markers)) {
+    /** @type {SpriteProps} */
+    const props = spriteProps[type] || spritePropsDefault
     const sprite = spriteHost + markerSprites[subtype || type]
     const point = new Point(fromLonLat([longitude, latitude]))
     const feature = new Feature({ geometry: point })
-    const style = new Style({ image: new Icon({ src: sprite, width: 64, height: 64 }) })
+    const style = new Style({ image: new Icon({ src: sprite, width: props.width, height: props.height }) })
 
     feature.setStyle(style)
     features.push(feature)
