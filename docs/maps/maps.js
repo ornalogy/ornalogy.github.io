@@ -43,6 +43,7 @@ const markerSprites = {
  */
 const spritePropsDefault = { width: 64, height: 64 }
 const spriteProps = {
+  monument: { width: 68, height: 68 },
   tower: { width: 48, height: 96 }
 }
 
