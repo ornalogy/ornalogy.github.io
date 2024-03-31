@@ -35,11 +35,10 @@
   width      : 100%;
 }
 
-.ornalogy__map_toolbar_item span:last-child {
+.ornalogy__map_toolbar_item span {
   overflow     : hidden;
   text-overflow: ellipsis;
   white-space  : nowrap;
-  width        : 100%;
 }
 
 .ornalogy__map_toolbar_select {
