@@ -340,7 +340,8 @@ function updateMapMarkers(markers) {
     const sprite = spriteHost + markerSprites[subtype || type]
     const point = new Point(fromLonLat([longitude, latitude]))
     const feature = new Feature({ geometry: point })
-    const style = new Style({ image: new Icon({ src: sprite, width: props.width, height: props.height }) })
+    const opacity = type === 'dungeon' && !subtype ? 0.6 : 1
+    const style = new Style({ image: new Icon({ opacity, src: sprite, width: props.width, height: props.height }) })
 
     feature.setStyle(style)
     features.push(feature)
