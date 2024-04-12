@@ -1,5 +1,5 @@
 import { oom } from 'https://cdn.jsdelivr.net/npm/@notml/core/+esm'
-import { Map, View, Feature } from 'https://cdn.jsdelivr.net/npm/ol@9.0.0/+esm'
+import { Map, View, Feature, Overlay } from 'https://cdn.jsdelivr.net/npm/ol@9.0.0/+esm'
 import { OSM, Vector as VectorSource } from 'https://cdn.jsdelivr.net/npm/ol@9.0.0/source.js/+esm'
 import { Tile, Vector as VectorLayer } from 'https://cdn.jsdelivr.net/npm/ol@9.0.0/layer.js/+esm'
 import { fromLonLat } from 'https://cdn.jsdelivr.net/npm/ol@9.0.0/proj.js/+esm'
@@ -229,9 +229,9 @@ class ToolBarControl extends Control {
   /** @type {string} */
   city
   /** @type {string[]} */
-  weeks = null
+  weeks
   /** @type {import('@notml/core').OOM<HTMLSelectElement>} */
-  weekSelect = null
+  weekSelect
 
   /**
    * @param {ToolBarControlOptions} options
@@ -303,13 +303,55 @@ class ToolBarControl extends Control {
 }
 
 
+class PopupControl {
+
+  content = oom.div()
+  closer = oom.div({
+    class: 'ornalogy__map_popup_closer',
+    onclick: () => this.close()
+  })
+
+  overlay = new Overlay({
+    element: oom.div({ class: 'ornalogy__map_popup' }, this.closer, this.content).dom,
+    autoPan: { animation: { duration: 250 } }
+  })
+
+  /**
+   * @param {Array<number>} [coordinate]
+   */
+  open(coordinate) {
+    const pixel = map.getPixelFromCoordinate(coordinate)
+    const features = map.getFeaturesAtPixel(pixel)
+
+    if (features && features.length > 0) {
+      const [marker] = features
+      const coords = marker.getGeometry().getCoordinates()
+
+      this.overlay.setPosition(coords)
+    }
+  }
+
+  close() {
+    this.overlay.setPosition(undefined)
+    this.closer.dom.blur()
+
+    return false
+  }
+
+}
+
+
 /**
  * @param {UserMap} mapData
  */
 function createMap(mapData) {
   const toolBar = new ToolBarControl({ chat: mapData.chat, city: mapData.city.nameRU })
+  const popup = new PopupControl()
   const controls = defaultControls().extend([toolBar])
   const center = fromLonLat([mapData.city.longitude, mapData.city.latitude])
+  const layers = [new Tile({ source: new OSM() })]
+  const overlays = [popup.overlay]
+  const mapElm = oom.div({ id: 'map' })
   const cityBorders = []
 
   for (const polygonRaw of mapData.city.coordinates) {
@@ -320,10 +362,11 @@ function createMap(mapData) {
     cityBorders.push(feature)
   }
 
-  oom(document.body, oom.div({ id: 'map' }))
-  map = new Map({ target: 'map', controls, layers: [new Tile({ source: new OSM() })] })
+  oom(document.body, mapElm)
+  map = new Map({ target: mapElm.dom, controls, layers, overlays })
   map.setView(new View({ center, zoom: 12, maxZoom: 18, minZoom: 10 }))
   map.addLayer(new VectorLayer({ source: new VectorSource({ features: cityBorders }) }))
+  map.on('singleclick', evt => popup.open(evt.coordinate))
 }
 
 
