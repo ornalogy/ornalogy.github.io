@@ -271,6 +271,10 @@ label.ornalogy__section__row {
   flex-wrap: wrap;
 }
 
+.ornalogy__tile_right {
+  justify-content: end;
+}
+
 .ornalogy__tile_tapped .ornalogy__tile__item:active {
   background-color: var(--ornalogy-tile-item-hover);
   border-color    : var(--ornalogy-border-color);

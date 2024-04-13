@@ -15,6 +15,13 @@ let map = null
 /** @type {VectorLayer} */
 let markersLayer = null
 const spriteHost = 'https://playorna.com/static/'
+/** @type {{[type:string]:string[]}} */
+const markerTypes = {
+  dungeon: ['dungeon', 'fort', 'mystic_cave', 'beast_den', 'dragon_roost', 'underworld_portal', 'chaos_portal', 'battlegrounds', 'valley_of_gods'],
+  coliseum: null,
+  tower: ['prometheus', 'themis', 'oceanus', 'eos', 'selene'],
+  monument: ['demeter', 'ithra', 'thor', 'vulcan']
+}
 const markerSprites = {
   dungeon: 'img/shops/dungeon.png',
   fort: 'img/shops/fort.png',
@@ -38,14 +45,26 @@ const markerSprites = {
 }
 /**
  * @typedef SpriteProps
- * @property {number} width
- * @property {number} height
+ * @property {number} [width]
+ * @property {number} [height]
+ * @property {string} [popupWidth]
  */
+/** @type {SpriteProps} */
 const spritePropsDefault = { width: 64, height: 64 }
+/** @type {{[type:string]:SpriteProps}} */
 const spriteProps = {
-  monument: { width: 68, height: 68 },
-  tower: { width: 48, height: 96 }
+  dungeon: { width: 64, height: 64, popupWidth: '380px' },
+  monument: { width: 68, height: 68, popupWidth: '320px' },
+  tower: { width: 48, height: 96, popupWidth: '300px' }
 }
+/**
+ * @typedef Marker
+ * @property {Point} point
+ * @property {string} type
+ * @property {string} subtype
+ */
+/** @type {WeakMap<Feature,Marker>} */
+const markerProps = new WeakMap()
 
 
 async function checkLogin() {
@@ -305,7 +324,7 @@ class ToolBarControl extends Control {
 
 class PopupControl {
 
-  content = oom.div()
+  content = oom.div({ class: 'ornalogy__tile' })
   closer = oom.div({
     class: 'ornalogy__map_popup_closer',
     onclick: () => this.close()
@@ -317,6 +336,39 @@ class PopupControl {
   })
 
   /**
+   * @param {Marker} marker
+   */
+  drawActions(marker) {
+    this.content({ innerHTML: '' })
+    if (marker.type in markerTypes && markerTypes[marker.type]) {
+      const props = spriteProps[marker.type] || spritePropsDefault
+      const tile = oom.div({
+        class: 'ornalogy__tile ornalogy__tile_selected',
+        style: { width: props.popupWidth || '100px' }
+      })
+
+      for (const sTypes of markerTypes[marker.type]) {
+        const item = oom.label({ class: 'ornalogy__tile__item' }, oom
+          .input({ type: 'radio', name: marker.type, checked: sTypes === marker.subtype })
+          .div({ class: 'ornalogy__tile__row' }, oom
+            .img({
+              style: { height: props.height + 'px', width: props.width + 'px' },
+              src: spriteHost + markerSprites[sTypes]
+            })
+          ))
+
+        tile(item)
+      }
+
+      this.content(tile)
+    }
+    this.content(oom.div({ class: 'ornalogy__tile ornalogy__tile_right' }, oom
+      .button('Применить')
+      .button('Удалить')
+    ))
+  }
+
+  /**
    * @param {Array<number>} [coordinate]
    */
   open(coordinate) {
@@ -324,9 +376,12 @@ class PopupControl {
     const features = map.getFeaturesAtPixel(pixel)
 
     if (features && features.length > 0) {
-      const [marker] = features
-      const coords = marker.getGeometry().getCoordinates()
+      /** @type {[Feature]} */// @ts-ignore
+      const [feature] = features
+      const marker = markerProps.get(feature)
+      const coords = marker.point.getCoordinates()
 
+      this.drawActions(marker)
       this.overlay.setPosition(coords)
     }
   }
@@ -386,6 +441,7 @@ function updateMapMarkers(markers) {
     const opacity = type === 'dungeon' && !subtype ? 0.6 : 1
     const style = new Style({ image: new Icon({ opacity, src: sprite, width: props.width, height: props.height }) })
 
+    markerProps.set(feature, { point, type, subtype })
     feature.setStyle(style)
     features.push(feature)
   }
