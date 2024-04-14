@@ -6,7 +6,7 @@ import { fromLonLat } from 'https://cdn.jsdelivr.net/npm/ol@9.0.0/proj.js/+esm'
 import { Polygon, Point } from 'https://cdn.jsdelivr.net/npm/ol@9.0.0/geom.js/+esm'
 import { Stroke, Icon, Style } from 'https://cdn.jsdelivr.net/npm/ol@9.0.0/style.js/+esm'
 import { Control, defaults as defaultControls } from 'https://cdn.jsdelivr.net/npm/ol@9.0.0/control.js/+esm'
-import { showError, showSections } from '../lib/ui.js'
+import { showError, showSections, showPopup } from '../lib/ui.js'
 import { apiFetch } from '../lib/api.js'
 import { showLoginForm } from '../lib/login.js'
 
@@ -60,8 +60,12 @@ const spriteProps = {
 /**
  * @typedef Marker
  * @property {Point} point
+ * @property {Style} style
+ * @property {string} uuid
+ * @property {string} ornuuid
  * @property {string} type
  * @property {string} subtype
+ * @property {string} week
  */
 /** @type {WeakMap<Feature,Marker>} */
 const markerProps = new WeakMap()
@@ -322,8 +326,20 @@ class ToolBarControl extends Control {
 }
 
 
+/**
+ * @typedef PopupControlOptions
+ * @property {ToolBarControl} toolBar
+ */
 class PopupControl {
 
+  /** @type {ToolBarControl} */
+  toolBar
+  /** @type {Feature} */
+  feature
+  /** @type {Marker} */
+  marker
+  /** @type {import('@notml/core').OOM<HTMLDivElement>} */
+  subtypeTile
   content = oom.div({ class: 'ornalogy__tile' })
   closer = oom.div({
     class: 'ornalogy__map_popup_closer',
@@ -336,36 +352,89 @@ class PopupControl {
   })
 
   /**
-   * @param {Marker} marker
+   * @param {PopupControlOptions} options
    */
-  drawActions(marker) {
+  constructor({ toolBar }) {
+    this.toolBar = toolBar
+  }
+
+  drawActions() {
+    const button = oom.div({ class: 'ornalogy__tile ornalogy__tile_right' })
+
     this.content({ innerHTML: '' })
-    if (marker.type in markerTypes && markerTypes[marker.type]) {
-      const props = spriteProps[marker.type] || spritePropsDefault
-      const tile = oom.div({
+    if (this.marker.type in markerTypes && markerTypes[this.marker.type]) {
+      const props = spriteProps[this.marker.type] || spritePropsDefault
+
+      this.subtypeTile = oom.div({
         class: 'ornalogy__tile ornalogy__tile_selected',
         style: { width: props.popupWidth || '100px' }
       })
 
-      for (const sTypes of markerTypes[marker.type]) {
+      for (const subtype of markerTypes[this.marker.type]) {
         const item = oom.label({ class: 'ornalogy__tile__item' }, oom
-          .input({ type: 'radio', name: marker.type, checked: sTypes === marker.subtype })
+          .input({ type: 'radio', name: this.marker.type, value: subtype, checked: subtype === this.marker.subtype })
           .div({ class: 'ornalogy__tile__row' }, oom
             .img({
               style: { height: props.height + 'px', width: props.width + 'px' },
-              src: spriteHost + markerSprites[sTypes]
+              src: spriteHost + markerSprites[subtype]
             })
           ))
 
-        tile(item)
+        this.subtypeTile(item)
       }
 
-      this.content(tile)
+      this.content(this.subtypeTile)
+      button(oom.button('Применить', { onclick: () => this.updateSubtype() }))
+    } else {
+      this.subtypeTile = null
     }
-    this.content(oom.div({ class: 'ornalogy__tile ornalogy__tile_right' }, oom
-      .button('Применить')
-      .button('Удалить')
-    ))
+
+    button(oom.button('Удалить', { onclick: () => this.removeMarker() }))
+    this.content(button)
+  }
+
+  async updateSubtype() {
+    /** @type {HTMLInputElement} */
+    const input = this.subtypeTile.dom.querySelector('input:checked')
+    const subtype = input?.value
+
+    if (subtype && this.marker.subtype !== subtype) {
+      /** @type {SpriteProps} */
+      const props = spriteProps[this.marker.type] || spritePropsDefault
+      const sprite = spriteHost + markerSprites[subtype]
+
+      this.marker.subtype = subtype
+      this.marker.style.setImage(new Icon({ src: sprite, width: props.width, height: props.height }))
+      markersLayer.changed()
+      this.close()
+
+      await this.updateMarker()
+    }
+  }
+
+  async updateMarker() {
+    const { uuid, ornuuid, type, subtype } = this.marker
+    const week = this.marker.week || this.toolBar.weekSelect.dom.value
+
+    await apiFetch('update-map-marker', { uuid, ornuuid, type, subtype, week })
+  }
+
+  async removeMarker() {
+    const action = await showPopup('Удалить маркер?', {
+      actions: ['ok', 'cancel']
+    })
+
+    if (action === 'ok') {
+      const { uuid, ornuuid } = this.marker
+      /** @type {VectorSource} */
+      const src = markersLayer.getSource()
+
+
+      src.removeFeature(this.feature)
+      markersLayer.changed()
+      this.close()
+      await apiFetch('remove-map-marker', { uuid, ornuuid })
+    }
   }
 
   /**
@@ -381,7 +450,9 @@ class PopupControl {
       const marker = markerProps.get(feature)
       const coords = marker.point.getCoordinates()
 
-      this.drawActions(marker)
+      this.feature = feature
+      this.marker = marker
+      this.drawActions()
       this.overlay.setPosition(coords)
     }
   }
@@ -401,7 +472,7 @@ class PopupControl {
  */
 function createMap(mapData) {
   const toolBar = new ToolBarControl({ chat: mapData.chat, city: mapData.city.nameRU })
-  const popup = new PopupControl()
+  const popup = new PopupControl({ toolBar })
   const controls = defaultControls().extend([toolBar])
   const center = fromLonLat([mapData.city.longitude, mapData.city.latitude])
   const layers = [new Tile({ source: new OSM() })]
@@ -432,7 +503,7 @@ function updateMapMarkers(markers) {
   const features = []
 
   if (markersLayer) map.removeLayer(markersLayer)
-  for (const { latitude, longitude, type, subtype } of Object.values(markers)) {
+  for (const { uuid, ornuuid, latitude, longitude, type, subtype, week } of Object.values(markers)) {
     /** @type {SpriteProps} */
     const props = spriteProps[type] || spritePropsDefault
     const sprite = spriteHost + markerSprites[subtype || type]
@@ -441,7 +512,7 @@ function updateMapMarkers(markers) {
     const opacity = type === 'dungeon' && !subtype ? 0.6 : 1
     const style = new Style({ image: new Icon({ opacity, src: sprite, width: props.width, height: props.height }) })
 
-    markerProps.set(feature, { point, type, subtype })
+    markerProps.set(feature, { point, style, uuid, ornuuid, type, subtype, week })
     feature.setStyle(style)
     features.push(feature)
   }
