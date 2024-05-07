@@ -89,8 +89,9 @@ html {
 
 .ornalogy input[type="radio"],
 .ornalogy input[type="checkbox"] {
-  height: 1.2rem;
-  width : 1.2rem;
+  height    : 1.2rem;
+  width     : 1.2rem;
+  align-self: center;
 }
 
 .ornalogy label:has(a) {
@@ -127,6 +128,10 @@ html {
   color       : var(--ornalogy-button-active-color);
   border-color: var(--ornalogy-button-active-border-color);
   box-shadow  : var(--ornalogy-elevation-1r);
+}
+
+.ornalogy .button_inline {
+  padding: revert;
 }
 
 .ornalogy__flex_grow_1 {
@@ -220,7 +225,6 @@ html {
 
 label.ornalogy__section__row {
   line-height: 2.4rem;
-  align-items: center;
 }
 
 .ornalogy__section__group {

@@ -112,8 +112,29 @@ function drawMap(chat, map) {
 
   for (const city of map.cities) {
     const href = chat ? `?chat=${chat}&city=${city.uuid}` : `?city=${city.uuid}`
+    const map = oom.div({ class: 'ornalogy__section__row' }, oom
+      .a({ href }, city.nameRU)
+      .button('×', {
+        class: 'button_inline',
+        onclick: async () => {
+          const msg = chat ? 'Карта удалится у вас. А маркеры на ней удалятся, когда все из чата удалят карту.' : 'Удалить карту?'
+          const action = await showPopup(msg, {
+            title: chat ? 'Удалить карту?' : null,
+            actions: ['ok', 'cancel']
+          })
 
-    cities(oom.a({ href }, city.nameRU))
+          if (action === 'ok') {
+            map.dom.remove()
+            if (!cities.dom.children.length) {
+              item.dom.remove()
+            }
+            await apiFetch('remove-map-city', { chat, city: city.uuid })
+          }
+        }
+      })
+    )
+
+    cities(map)
   }
   if (!map.cities.length) {
     cities('Нет данных')
