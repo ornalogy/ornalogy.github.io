@@ -107,3 +107,18 @@
 .ornalogy__map_popup_closer:after {
   content: "✖";
 }
+
+.ornalogy__map_edit_button {
+  position: absolute;
+  top     : 0;
+  right   : 0;
+  margin  : var(--ornalogy-base-padding);
+}
+
+.ornalogy__remove_map_city {
+  visibility: hidden;
+}
+
+.ornalogy__map_editable .ornalogy__remove_map_city {
+  visibility: revert;
+}

@@ -3,7 +3,10 @@
 }
 
 .ornalogy__site__header {
-  padding: .2rem 1rem;
+  padding    : .2rem 1rem;
+  gap        : .5rem;
+  display    : flex;
+  align-items: baseline;
 }
 
 .ornalogy__main {

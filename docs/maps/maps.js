@@ -110,31 +110,46 @@ function drawMap(chat, map) {
   const cities = oom.div({ class: 'ornalogy__section' })
   const item = oom.div(header, cities)
 
+  if (chat) {
+    header(oom.button('Скрыть', {
+      class: 'ornalogy__button_inline ornalogy__remove_map_city',
+      onclick: async () => {
+        const msg = 'Карты не удалятся, они скроются только у вас.\nЧтобы вернулись, надо снова зайти по ссылке из чата.'
+        const action = await showPopup(msg, {
+          title: `Скрыть карты чата '${map.title}'?`,
+          actions: ['ok', 'cancel']
+        })
+
+        if (action === 'ok') {
+          item.dom.remove()
+          await apiFetch('hide-map', { chat })
+        }
+      }
+    }))
+  }
+
   for (const city of map.cities) {
     const href = chat ? `?chat=${chat}&city=${city.uuid}` : `?city=${city.uuid}`
-    const map = oom.div({ class: 'ornalogy__section__row' }, oom
+    const mapElm = oom.div({ class: 'ornalogy__section__row' }, oom
       .a({ href }, city.nameRU)
-      .button('×', {
-        class: 'button_inline',
+      .button('Удалить', {
+        class: 'ornalogy__button_inline ornalogy__remove_map_city',
         onclick: async () => {
-          const msg = chat ? 'Карта удалится у вас. А маркеры на ней удалятся, когда все из чата удалят карту.' : 'Удалить карту?'
+          const msg = chat ? `Карта удалится у всех участников чата '${map.title}'.` : `Удалить карту '${city.nameRU}'?`
           const action = await showPopup(msg, {
-            title: chat ? 'Удалить карту?' : null,
+            title: chat ? `Удалить карту '${city.nameRU}'?` : null,
             actions: ['ok', 'cancel']
           })
 
           if (action === 'ok') {
-            map.dom.remove()
-            if (!cities.dom.children.length) {
-              item.dom.remove()
-            }
+            mapElm.dom.remove()
             await apiFetch('remove-map-city', { chat, city: city.uuid })
           }
         }
       })
     )
 
-    cities(map)
+    cities(mapElm)
   }
   if (!map.cities.length) {
     cities('Нет данных')
@@ -181,6 +196,11 @@ async function loadMaps() {
           .a({ href: 'https://t.me/ornaculum_bot', target: '_blanck' }, '@ornaculum_bot')
           .span(' команду ').code('/maps').span(', и узнайте как работать с картами.'))
       ))
+    } else {
+      section(oom.button('📝', {
+        class: 'ornalogy__map_edit_button',
+        onclick: () => { section.dom.classList.toggle('ornalogy__map_editable') }
+      }))
     }
 
     showSections(section, {
@@ -202,7 +222,13 @@ async function loadCities(chat) {
     await showError('Нет доступа к карте!') // @ts-ignore
     location = '/'
   } else {
-    showSections(drawMap(chat, data), {
+    const section = oom.div(oom.button('📝', {
+      class: 'ornalogy__map_edit_button',
+      onclick: () => { section.dom.classList.toggle('ornalogy__map_editable') }
+    }))
+
+    section(drawMap(chat, data))
+    showSections(section, {
       canBeClosed: false,
       back: () => { location.search = '/maps/' }
     })

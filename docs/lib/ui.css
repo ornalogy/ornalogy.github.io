@@ -130,7 +130,7 @@ html {
   box-shadow  : var(--ornalogy-elevation-1r);
 }
 
-.ornalogy .button_inline {
+.ornalogy button.ornalogy__button_inline {
   padding: revert;
 }
 
