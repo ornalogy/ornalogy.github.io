@@ -223,6 +223,7 @@ html {
   align-items: baseline;
 }
 
+span.ornalogy__section__row,
 label.ornalogy__section__row {
   line-height: 2.4rem;
 }
@@ -250,6 +251,15 @@ label.ornalogy__section__row {
 
 .ornalogy__section__group__label {
   font-size    : 1.4rem;
+  border       : 1px solid;
+  display      : inline-flex;
+  background   : var(--ornalogy-label-bg-color);
+  border-color : var(--ornalogy-border-color);
+  border-radius: var(--ornalogy-border-radius);
+  padding      : var(--ornalogy-label-padding);
+}
+
+.ornalogy__section__group__text {
   border       : 1px solid;
   display      : inline-flex;
   background   : var(--ornalogy-label-bg-color);
