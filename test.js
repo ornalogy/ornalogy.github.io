@@ -10,7 +10,8 @@ const rootPort = 8080
 const appPort = 8081
 const proxyRules = {
   'ornalogy.localhost': { port: appPort },
-  'app.ornalogy.localhost': { port: 8082 }
+  'app.ornalogy.localhost': { port: 8082 },
+  'orna.ornalogy.localhost': { port: 3030 }
 }
 const app = fastify({
   logger: {
@@ -45,7 +46,6 @@ app.ready(async err => {
   } else {
     try {
       await app.listen({ host: '0.0.0.0', port: appPort })
-      app.log.info(`App listening at http://localhost:${appPort}`)
       if (isLocaltunnel) {
         await listenLocaltunnel()
       } else {
@@ -79,8 +79,10 @@ function listenProxy() {
     req.pipe(proxy, { end: true })
     proxy.on('error', err => { app.log.error(err); resA.statusCode = 500; resA.end() })
   }).listen(rootPort, () => {
-    app.log.info(`Proxy at http://ornalogy.localhost:${rootPort}`)
-    app.log.info(`Proxy at http://app.ornalogy.localhost:${proxyRules['app.ornalogy.localhost'].port}/`)
+    app.log.info('Ready ListenProxy')
+    app.log.info(`Ornalogy site at http://ornalogy.localhost:${rootPort}`)
+    app.log.info(`Ornalogy app  at http://app.ornalogy.localhost:${rootPort}/`)
+    app.log.info(`Ornalogy game at http://orna.ornalogy.localhost:${rootPort}/`)
   })
 }
 
