@@ -18,6 +18,7 @@
   },
   "scripts": {
     "test": "node test.js",
-    "tunnel": "LOCAL_TUNNEL=true node test.js"
+    "tunnel": "RUN_MODE=LOCAL_TUNNEL node test.js",
+    "devtunnels": "RUN_MODE=DEV_TUNNELS node test.js"
   }
 }

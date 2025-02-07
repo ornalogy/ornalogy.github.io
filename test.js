@@ -5,7 +5,21 @@ import { fastify } from 'fastify'
 import { fastifyStatic } from '@fastify/static'
 import { fastifyCors } from '@fastify/cors'
 
-const isLocaltunnel = process.env.LOCAL_TUNNEL === 'true'
+const runMode = process.env.RUN_MODE || 'LOCAL_PROXY'
+const modeDomines = {
+  LOCAL_PROXY: {
+    site: 'http://ornalogy.localhost:8080',
+    app: 'http://app.ornalogy.localhost:8080'
+  },
+  LOCAL_TUNNEL: {
+    site: 'https://ornalogy.loca.lt',
+    app: 'https://app-ornalogy.loca.lt'
+  },
+  DEV_TUNNELS: {
+    site: 'https://b7zw7bgd-8081.euw.devtunnels.ms',
+    app: 'https://b7zw7bgd-8082.euw.devtunnels.ms'
+  }
+}
 const rootPort = 8080
 const appPort = 8081
 const proxyRules = {
@@ -34,11 +48,11 @@ app.register(fastifyStatic, {
 app.get('/lib/ui.js', async (_, reply) => reply
   .type('application/javascript')
   .send((await readFile('./docs/lib/ui.js', 'utf-8'))
-    .replace('https://ornalogy.ru', isLocaltunnel ? 'https://ornalogy.loca.lt' : 'http://ornalogy.localhost:8080')))
+    .replace('https://ornalogy.ru', modeDomines[runMode].site)))
 app.get('/lib/api.js', async (_, reply) => reply
   .type('application/javascript')
   .send((await readFile('./docs/lib/api.js', 'utf-8'))
-    .replace('https://app.ornalogy.ru', isLocaltunnel ? 'https://app-ornalogy.loca.lt' : 'http://app.ornalogy.localhost:8080')))
+    .replace('https://app.ornalogy.ru', modeDomines[runMode].app)))
 app.ready(async err => {
   if (err) {
     console.error(err)
@@ -46,10 +60,12 @@ app.ready(async err => {
   } else {
     try {
       await app.listen({ host: '0.0.0.0', port: appPort })
-      if (isLocaltunnel) {
+      if (runMode === 'LOCAL_TUNNEL') {
         await listenLocaltunnel()
-      } else {
+      } else if (runMode === 'LOCAL_PROXY') {
         listenProxy()
+      } else if (runMode === 'DEV_TUNNELS') {
+        app.log.info('Forward ports: 8081 8082')
       }
     } catch (err) {
       console.error(err)
