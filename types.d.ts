@@ -33,3 +33,5 @@ declare module 'https://cdn.jsdelivr.net/npm/ol@9.0.0/style.js/+esm' {
 declare module 'https://cdn.jsdelivr.net/npm/ol@9.0.0/control.js/+esm' {
   export * from 'ol/control.js'
 }
+
+declare var __debug_load_ornalogy: boolean

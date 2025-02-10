@@ -7,6 +7,12 @@ const eStack = new Error('').stack
 const appScript = eStack.replace(/[\s\S]*app\.js\?s=(.*\.js)[\s\S]*/, '$1')
 const appModule = eStack.replace(/[\s\S]*app\.js\?m=(.*\.js)[\s\S]*/, '$1')
 
+if (window.__debug_load_ornalogy) {
+  console.log('eStack:', eStack)
+  console.log('appScript:', appScript)
+  console.log('appModule:', appModule)
+}
+
 
 async function initializeApp() {
   const data = await apiFetch('get-app', { appVersion })
@@ -28,4 +34,8 @@ async function initializeApp() {
 }
 
 
-initializeApp()
+initializeApp().catch(reason => {
+  if (window.__debug_load_ornalogy) {
+    console.error(reason)
+  }
+})
