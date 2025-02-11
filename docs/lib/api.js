@@ -8,10 +8,18 @@ const apiHost = `${appHost}/api/`
  * @returns {Promise<object>}
  */
 async function apiFetch(name, params = {}) {
-  const res = await fetch(apiHost + name, {
+  const apiPath = apiHost + name
+  const bodyParams = JSON.stringify(params)
+
+  if (window.__debug_load_ornalogy) {
+    console.log('apiPath:', apiPath)
+    console.log('bodyParams:', bodyParams)
+  }
+
+  const res = await fetch(apiPath, {
     method: 'POST',
     credentials: 'include',
-    body: JSON.stringify(params)
+    body: bodyParams
   })
 
   if (res.status === 200) {
