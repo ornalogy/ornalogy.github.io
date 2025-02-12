@@ -48,8 +48,12 @@ function xmlHttpFetch(url, props) {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest()
 
+    if (window.__debug_load_ornalogy) {
+      console.log('xmlHttpFetch')
+    }
+
     xhr.open(props.method, url, true)
-    xhr.withCredentials = props.credentials === 'include'
+    // xhr.withCredentials = props.credentials === 'include'
     xhr.setRequestHeader('accept', 'application/json')
     xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8')
     xhr.send(props.body)
