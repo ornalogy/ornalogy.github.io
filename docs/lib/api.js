@@ -50,6 +50,8 @@ function xmlHttpFetch(url, props) {
 
     xhr.open(props.method, url, true)
     xhr.withCredentials = props.credentials === 'include'
+    xhr.setRequestHeader('accept', 'application/json')
+    xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8')
     xhr.send(props.body)
 
     xhr.onload = () => {
